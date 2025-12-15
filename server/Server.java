@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
@@ -29,13 +32,13 @@ class GetEventsHandler implements HttpHandler {
         LocalDateTime start = null;
         LocalDateTime end = null;
         String city = params.get("city");
-
         try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
             if (params.containsKey("start")) {
-                start = LocalDateTime.parse(params.get("start"));
+                start = LocalDateTime.parse(params.get("start"), formatter);
             }
             if (params.containsKey("end")) {
-                end = LocalDateTime.parse(params.get("end"));
+                end = LocalDateTime.parse(params.get("end"), formatter);
             }
         } catch (DateTimeParseException e) {
             exchange.sendResponseHeaders(400, 0);
@@ -48,9 +51,9 @@ class GetEventsHandler implements HttpHandler {
         try {
             EventsBD eventsBD = EventsBD.get_instance();
             List<Event> events = eventsBD.getEvents(start, end, city);
-            String response = events.stream()
-                    .map(Event::toString)
-                    .collect(Collectors.joining("\n"));
+            String response = "[" + events.stream()
+                    .map(Event::toJSON)
+                    .collect(Collectors.joining(",")) + "]";
             exchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
@@ -68,6 +71,7 @@ class GetEventsHandler implements HttpHandler {
         }
         return Map.ofEntries(
                 java.util.Arrays.stream(query.split("&"))
+                        .map(s -> URLDecoder.decode(s, StandardCharsets.UTF_8))
                         .map(s -> s.split("=", 2))
                         .map(arr -> Map.entry(arr[0], arr.length > 1 ? arr[1] : ""))
                         .toArray(Map.Entry[]::new)
@@ -75,6 +79,31 @@ class GetEventsHandler implements HttpHandler {
     }
 }
 
+
+class GetCitiesHandler implements HttpHandler {
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        if (!exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+            exchange.sendResponseHeaders(405, -1);
+            return;
+        }
+
+        try {
+            EventsBD eventsBD = EventsBD.get_instance();
+            List<String> cities = eventsBD.getAllCity();
+            String response = cities.stream().collect(Collectors.joining(","));
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            exchange.sendResponseHeaders(500, 0);
+            exchange.getResponseBody().close();
+        }
+    }
+}
 public class Server {
 
     private InetSocketAddress socketAddress;
@@ -85,6 +114,7 @@ public class Server {
         httpServer = HttpServer.create(socketAddress, 0);
 
         httpServer.createContext("/get_events", new GetEventsHandler());
+        httpServer.createContext("/get_cities", new GetCitiesHandler());
     }
 
     public void start() {

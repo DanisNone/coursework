@@ -51,4 +51,10 @@ public class Event {
                ", name='" + name + '\'' +
                '}';
     }
+    public String toJSON() {
+        return String.format(
+            "{\"startTime\":\"%s\",\"endTime\":\"%s\",\"full_location\":\"%s\",\"city\":\"%s\",\"name\":\"%s\"}",
+            startTime, endTime, full_location, city, name
+        );
+    }
 }

@@ -1,13 +1,16 @@
-import java.io.IOException;
 import server.Server;
 
 public class Main {
-    static public void main(String[] args) throws IOException {
-        String hostname = "127.0.0.1";
-        int port = 8000;
-
-        Server server = new Server(hostname, port);
-        server.start();
+    static public void main(String[] args) {
+        String hostname = "0.0.0.0";
+        int port = 8080;
+        try {
+            Server server = new Server(hostname, port);
+            server.start();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        } 
 /*
         System.out.println("server start; http://" + hostname + ":" + port);
 
