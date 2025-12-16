@@ -1,8 +1,5 @@
 package server;
 
-import com.sun.net.httpserver.*;
-import database.Event;
-import database.EventsBD;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -13,9 +10,17 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+
+import database.Event;
+import database.EventsBD;
 
 class GetEventsHandler implements HttpHandler {
 
@@ -42,9 +47,9 @@ class GetEventsHandler implements HttpHandler {
             }
         } catch (DateTimeParseException e) {
             exchange.sendResponseHeaders(400, 0);
-            OutputStream os = exchange.getResponseBody();
-            os.write("Invalid date format. Use yyyy-MM-ddTHH:mm".getBytes());
-            os.close();
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write("Invalid date format. Use yyyy-MM-ddTHH:mm".getBytes());
+            }
             return;
         }
 
@@ -55,11 +60,10 @@ class GetEventsHandler implements HttpHandler {
                     .map(Event::toJSON)
                     .collect(Collectors.joining(",")) + "]";
             exchange.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+           }
         } catch (SQLException e) {
-            e.printStackTrace();
             exchange.sendResponseHeaders(500, 0);
             exchange.getResponseBody().close();
         }
@@ -69,13 +73,14 @@ class GetEventsHandler implements HttpHandler {
         if (query == null || query.isEmpty()) {
             return Map.of();
         }
-        return Map.ofEntries(
-                java.util.Arrays.stream(query.split("&"))
-                        .map(s -> URLDecoder.decode(s, StandardCharsets.UTF_8))
-                        .map(s -> s.split("=", 2))
-                        .map(arr -> Map.entry(arr[0], arr.length > 1 ? arr[1] : ""))
-                        .toArray(Map.Entry[]::new)
-        );
+        String[] queries = query.split("&");
+        Map<String, String> pairs = new HashMap<>();
+
+        for (String q : queries) {
+            String[] kv = URLDecoder.decode(q, StandardCharsets.UTF_8).split("="); 
+            pairs.put(kv[0], kv.length > 1 ? kv[1] : "");
+        }
+        return pairs;
     }
 }
 
@@ -94,11 +99,10 @@ class GetCitiesHandler implements HttpHandler {
             List<String> cities = eventsBD.getAllCity();
             String response = cities.stream().collect(Collectors.joining(","));
             exchange.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
             exchange.sendResponseHeaders(500, 0);
             exchange.getResponseBody().close();
         }
@@ -106,8 +110,8 @@ class GetCitiesHandler implements HttpHandler {
 }
 public class Server {
 
-    private InetSocketAddress socketAddress;
-    private HttpServer httpServer;
+    private final InetSocketAddress socketAddress;
+    private final HttpServer httpServer;
 
     public Server(String hostname, int port) throws IOException {
         socketAddress = new InetSocketAddress(hostname, port);

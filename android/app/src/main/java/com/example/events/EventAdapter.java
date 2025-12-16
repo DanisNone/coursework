@@ -1,5 +1,6 @@
 package com.example.events;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,20 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event event = eventList.get(position);
+
         holder.tvName.setText(event.name);
         holder.tvTime.setText(event.startTime + " - " + event.endTime);
         holder.tvLocation.setText(event.full_location + ", " + event.city);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EventDetailActivity.class);
+            intent.putExtra("name", event.name);
+            intent.putExtra("time", event.startTime + " - " + event.endTime);
+            intent.putExtra("location", event.full_location + ", " + event.city);
+            v.getContext().startActivity(intent);
+        });
     }
+
 
     @Override
     public int getItemCount() {

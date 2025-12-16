@@ -1,121 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainLayout"
+    android:background="#F4F6F8"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
     <!-- Заголовок -->
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:text="Мероприятия"
-        android:textSize="24sp"
+        android:textSize="26sp"
         android:textStyle="bold"
-        android:gravity="center"
+        android:layout_margin="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- Spinner для выбора города -->
-    <Spinner
-        android:id="@+id/spinnerCity"
+    <!-- Карточка фильтров -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardFilters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"/>
-
-    <!-- GridLayout для даты начала и конца -->
-    <GridLayout
-        android:id="@+id/gridDates"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        android:rowCount="2"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@id/spinnerCity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Дата начала -->
-        <TextView
-            android:id="@+id/tvStartDateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Дата начала:"
-            android:layout_row="0"
-            android:layout_column="0"
-            android:layout_gravity="start|center_vertical"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/etStartDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:hint="Выберите дату и время"
-            android:focusable="false"
-            android:clickable="true"
-            android:layout_row="0"
-            android:layout_column="1"/>
+            <!-- Город -->
+            <TextView
+                android:text="Город"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-        <!-- Дата конца -->
-        <TextView
-            android:id="@+id/tvEndDateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Дата конца:"
-            android:layout_row="1"
-            android:layout_column="0"
-            android:layout_gravity="start|center_vertical"/>
+            <Spinner
+                android:id="@+id/spinnerCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/etEndDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:hint="Выберите дату и время"
-            android:focusable="false"
-            android:clickable="true"
-            android:layout_row="1"
-            android:layout_column="1"/>
+            <!-- Даты -->
+            <TextView
+                android:text="Период"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-    </GridLayout>
+            <EditText
+                android:id="@+id/etStartDate"
+                android:hint="Дата начала"
+                android:focusable="false"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-    <!-- Кнопка поиска -->
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Искать"
-        app:layout_constraintTop_toBottomOf="@id/gridDates"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+            <EditText
+                android:id="@+id/etEndDate"
+                android:hint="Дата окончания"
+                android:focusable="false"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-    <!-- Список мероприятий -->
+            <!-- Кнопка -->
+            <Button
+                android:id="@+id/btnSearch"
+                android:text="Найти мероприятия"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Список -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvEvents"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/btnSearch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/cardFilters"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"/>
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
