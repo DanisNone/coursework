@@ -1,6 +1,11 @@
 package database;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +77,6 @@ public class EventsBD {
     public List<Event> getEvents(LocalDateTime start, LocalDateTime end, String city) throws SQLException {
         StringBuilder sql = new StringBuilder("SELECT * FROM events WHERE 1=1");
         
-        // Список параметров для PreparedStatement
         List<Object> params = new ArrayList<>();
         
         if (start != null) {
@@ -89,7 +93,6 @@ public class EventsBD {
         }
         
         try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
-            // Подставляем все параметры
             for (int i = 0; i < params.size(); i++) {
                 pstmt.setObject(i + 1, params.get(i));
             }
