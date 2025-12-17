@@ -3,12 +3,12 @@ package database;
 import java.time.LocalDateTime;
 
 public class Event {
-    LocalDateTime startTime;
-    LocalDateTime endTime;
-    String full_location;
-    String city;
-    String name;
-    String descr;
+    public LocalDateTime startTime;
+    public LocalDateTime endTime;
+    public String full_location;
+    public String city;
+    public String name;
+    public String descr;
 
     public Event(LocalDateTime startTime, LocalDateTime endTime, String full_location, String city, String eventName, String descr) {
         if (endTime.isEqual(startTime) || endTime.isBefore(startTime)) {
