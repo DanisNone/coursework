@@ -52,12 +52,12 @@ public class Event {
             String value = keyValue[1].trim().replace("\"", "");
 
             switch (key) {
-                case "startTime" -> startTimeStr = value;
-                case "endTime" -> endTimeStr = value;
-                case "full_location" -> full_location = value;
-                case "city" -> city = value;
-                case "name" -> name = value;
-                case "descr" -> descr = value;
+                case "startTime": startTimeStr = value; break;
+                case "endTime": endTimeStr = value; break;
+                case "full_location": full_location = value; break;
+                case "city": city = value; break;
+                case "name": name = value; break;
+                case "descr": descr = value; break;
             }
         }
 
