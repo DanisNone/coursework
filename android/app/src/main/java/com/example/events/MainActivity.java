@@ -40,6 +40,7 @@ class Event {
     public String full_location;
     public String city;
     public String name;
+    public String descr;
 }
 
 public class MainActivity extends AppCompatActivity {

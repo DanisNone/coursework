@@ -76,7 +76,17 @@
                     android:textSize="14sp"
                     android:textColor="#6B7280" />
             </LinearLayout>
-
+            <!-- Описание события -->
+            <TextView
+                android:id="@+id/tvEventDescr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textSize="14sp"
+                android:textColor="#374151"
+                android:lineSpacingExtra="4dp"
+                android:maxLines="10"
+                android:ellipsize="end" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

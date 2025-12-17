@@ -39,7 +39,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             Intent intent = new Intent(v.getContext(), EventDetailActivity.class);
             intent.putExtra("name", event.name);
             intent.putExtra("time", event.startTime + " - " + event.endTime);
-            intent.putExtra("location", event.full_location + ", " + event.city);
+            intent.putExtra("location", event.full_location);
+            intent.putExtra("description", event.descr);
             v.getContext().startActivity(intent);
         });
     }
