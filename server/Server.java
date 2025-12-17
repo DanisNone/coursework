@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -108,6 +109,52 @@ class GetCitiesHandler implements HttpHandler {
         }
     }
 }
+
+class AddEventHandler implements HttpHandler {
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+            exchange.sendResponseHeaders(405, -1);
+            return;
+        }
+
+        String body;
+        try (InputStream is = exchange.getRequestBody()) {
+            body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
+
+        try {
+            Event event = Event.fromJSON(body);
+
+            EventsBD eventsBD = EventsBD.get_instance();
+            eventsBD.insertEvent(event);
+
+            String response = "{\"status\":\"success\",\"message\":\"Event added\"}";
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+
+        } catch (DateTimeParseException e) {
+            String response = "{\"status\":\"error\",\"message\":\"Invalid date format. Use dd.MM.yyyy HH:mm\"}";
+            exchange.sendResponseHeaders(400, response.getBytes().length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+        } catch (SQLException e) {
+            exchange.sendResponseHeaders(500, 0);
+            exchange.getResponseBody().close();
+        } catch (Exception e) {
+            String response = "{\"status\":\"error\",\"message\":\"Invalid request body\"}";
+            exchange.sendResponseHeaders(400, response.getBytes().length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+        }
+    }
+}
+
 public class Server {
 
     private final InetSocketAddress socketAddress;
@@ -119,6 +166,7 @@ public class Server {
 
         httpServer.createContext("/get_events", new GetEventsHandler());
         httpServer.createContext("/get_cities", new GetCitiesHandler());
+        httpServer.createContext("/add_event", new AddEventHandler());
     }
 
     public void start() {
