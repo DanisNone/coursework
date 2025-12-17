@@ -60,7 +60,7 @@ public class Event {
                 case "descr": descr = value; break;
             }
         }
-
+ 
         LocalDateTime startTime = LocalDateTime.parse(startTimeStr);
         LocalDateTime endTime = LocalDateTime.parse(endTimeStr);
 
