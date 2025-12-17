@@ -34,18 +34,20 @@ public class EventsBD {
                      "end_time DATETIME NOT NULL," +
                      "full_location TEXT NOT NULL," +
                      "city TEXT NOT NULL," +
-                     "name TEXT NOT NULL)";
+                     "name TEXT NOT NULL," +
+                     "descr TEXT NOT NULL)";
         conn.createStatement().execute(sql);
     }
     
     public void insertEvent(Event event) throws SQLException {
-        String sql = "INSERT INTO events (start_time, end_time, full_location, city, name) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO events (start_time, end_time, full_location, city, name, descr) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setTimestamp(1, Timestamp.valueOf(event.startTime));
             pstmt.setTimestamp(2, Timestamp.valueOf(event.endTime));
             pstmt.setString(3, event.full_location);
             pstmt.setString(4, event.city);
             pstmt.setString(5, event.name);
+            pstmt.setString(6, event.descr);
             pstmt.executeUpdate();
         }
     }
@@ -69,7 +71,8 @@ public class EventsBD {
             String full_location = rs.getString("full_location");
             String event_city = rs.getString("city");
             String name = rs.getString("name");
-            Event event = new Event(startTime, endTime, full_location, event_city, name);
+            String descr = rs.getString("descr");
+            Event event = new Event(startTime, endTime, full_location, event_city, name, descr);
             events.add(event);
         }
         return events;

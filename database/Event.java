@@ -8,8 +8,9 @@ public class Event {
     String full_location;
     String city;
     String name;
+    String descr;
 
-    public Event(LocalDateTime startTime, LocalDateTime endTime, String full_location, String city, String eventName) {
+    public Event(LocalDateTime startTime, LocalDateTime endTime, String full_location, String city, String eventName, String descr) {
         if (endTime.isEqual(startTime) || endTime.isBefore(startTime)) {
             throw new IllegalArgumentException("endTime >= startTime");
         }
@@ -19,6 +20,7 @@ public class Event {
         this.full_location = full_location;
         this.city = city;
         this.name = eventName;
+        this.descr = descr;
     }
 
     @Override
@@ -29,12 +31,13 @@ public class Event {
                ", full_location='" + full_location + '\'' +
                ", city='" + city + '\'' +
                ", name='" + name + '\'' +
+               ", descr='" + descr + '\'' +
                '}';
     }
     public String toJSON() {
         return String.format(
-            "{\"startTime\":\"%s\",\"endTime\":\"%s\",\"full_location\":\"%s\",\"city\":\"%s\",\"name\":\"%s\"}",
-            startTime, endTime, full_location, city, name
+            "{\"startTime\":\"%s\",\"endTime\":\"%s\",\"full_location\":\"%s\",\"city\":\"%s\",\"name\":\"%s\", \"descr\": \"%s\"}",
+            startTime, endTime, full_location, city, name, descr
         );
     }
 }
