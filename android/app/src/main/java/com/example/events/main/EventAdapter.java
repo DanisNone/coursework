@@ -1,4 +1,4 @@
-package com.example.events;
+package com.example.events.main;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.events.R;
+import com.example.events.model.Event;
 
 import java.util.List;
 
@@ -31,16 +34,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event event = eventList.get(position);
 
-        holder.tvName.setText(event.name);
-        holder.tvTime.setText(event.startTime + " - " + event.endTime);
-        holder.tvLocation.setText(event.full_location + ", " + event.city);
+        holder.tvName.setText(event.getName());
+        holder.tvTime.setText(event.getStartTime() + " - " + event.getEndTime());
+        holder.tvLocation.setText(event.getFull_location() + ", " + event.getCity());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EventDetailActivity.class);
-            intent.putExtra("name", event.name);
-            intent.putExtra("time", event.startTime + " - " + event.endTime);
-            intent.putExtra("location", event.full_location);
-            intent.putExtra("description", event.descr);
+            intent.putExtra("name", event.getName());
+            intent.putExtra("time", event.getStartTime() + " - " + event.getEndTime());
+            intent.putExtra("location", event.getFull_location());
+            intent.putExtra("description", event.getDescription());
             v.getContext().startActivity(intent);
         });
     }

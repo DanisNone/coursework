@@ -49,7 +49,7 @@ class GetEventsHandler implements HttpHandler {
         } catch (DateTimeParseException e) {
             exchange.sendResponseHeaders(400, 0);
             try (OutputStream os = exchange.getResponseBody()) {
-                os.write("Invalid date format. Use yyyy-MM-ddTHH:mm".getBytes());
+                os.write("Invalid date format. Use dd.MM.yyyy HH:mm".getBytes());
             }
             return;
         }
@@ -63,7 +63,7 @@ class GetEventsHandler implements HttpHandler {
             exchange.sendResponseHeaders(200, response.getBytes().length);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes());
-           }
+            }
         } catch (SQLException e) {
             exchange.sendResponseHeaders(500, 0);
             exchange.getResponseBody().close();
@@ -78,7 +78,7 @@ class GetEventsHandler implements HttpHandler {
         Map<String, String> pairs = new HashMap<>();
 
         for (String q : queries) {
-            String[] kv = URLDecoder.decode(q, StandardCharsets.UTF_8).split("="); 
+            String[] kv = URLDecoder.decode(q, StandardCharsets.UTF_8).split("=");
             pairs.put(kv[0], kv.length > 1 ? kv[1] : "");
         }
         return pairs;

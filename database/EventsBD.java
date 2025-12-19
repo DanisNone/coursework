@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EventsBD {
     static private EventsBD instance;
-    
+
     private Connection conn;
     private EventsBD() throws SQLException{
         String url = "jdbc:sqlite:database.db";
@@ -29,16 +29,16 @@ public class EventsBD {
 
     private void createTableIfNotExists() throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS events (" +
-                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                     "start_time DATETIME NOT NULL," +
-                     "end_time DATETIME NOT NULL," +
-                     "full_location TEXT NOT NULL," +
-                     "city TEXT NOT NULL," +
-                     "name TEXT NOT NULL," +
-                     "descr TEXT NOT NULL)";
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "start_time DATETIME NOT NULL," +
+                "end_time DATETIME NOT NULL," +
+                "full_location TEXT NOT NULL," +
+                "city TEXT NOT NULL," +
+                "name TEXT NOT NULL," +
+                "descr TEXT NOT NULL)";
         conn.createStatement().execute(sql);
     }
-    
+
     public void insertEvent(Event event) throws SQLException {
         String sql = "INSERT INTO events (start_time, end_time, full_location, city, name, descr) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -79,9 +79,9 @@ public class EventsBD {
     }
     public List<Event> getEvents(LocalDateTime start, LocalDateTime end, String city) throws SQLException {
         StringBuilder sql = new StringBuilder("SELECT * FROM events WHERE 1=1");
-        
+
         List<Object> params = new ArrayList<>();
-        
+
         if (start != null) {
             sql.append(" AND start_time >= ?");
             params.add(Timestamp.valueOf(start));
@@ -94,12 +94,12 @@ public class EventsBD {
             sql.append(" AND city = ?");
             params.add(city);
         }
-        
+
         try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) {
                 pstmt.setObject(i + 1, params.get(i));
             }
-            
+
             try (ResultSet rs = pstmt.executeQuery()) {
                 return getEventsFromRS(rs);
             }

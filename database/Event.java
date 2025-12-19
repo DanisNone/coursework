@@ -1,6 +1,7 @@
 package database;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Event {
     public LocalDateTime startTime;
@@ -26,18 +27,18 @@ public class Event {
     @Override
     public String toString() {
         return "Event{" +
-               "startTime=" + startTime +
-               ", endTime=" + endTime +
-               ", full_location='" + full_location + '\'' +
-               ", city='" + city + '\'' +
-               ", name='" + name + '\'' +
-               ", descr='" + descr + '\'' +
-               '}';
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", full_location='" + full_location + '\'' +
+                ", city='" + city + '\'' +
+                ", name='" + name + '\'' +
+                ", descr='" + descr + '\'' +
+                '}';
     }
     public String toJSON() {
         return String.format(
-            "{\"startTime\":\"%s\",\"endTime\":\"%s\",\"full_location\":\"%s\",\"city\":\"%s\",\"name\":\"%s\", \"descr\": \"%s\"}",
-            startTime, endTime, full_location, city, name, descr
+                "{\"startTime\":\"%s\",\"endTime\":\"%s\",\"full_location\":\"%s\",\"city\":\"%s\",\"name\":\"%s\", \"descr\": \"%s\"}",
+                startTime, endTime, full_location, city, name, descr
         );
     }
     public static Event fromJSON(String json) {
@@ -60,9 +61,11 @@ public class Event {
                 case "descr": descr = value; break;
             }
         }
- 
-        LocalDateTime startTime = LocalDateTime.parse(startTimeStr);
-        LocalDateTime endTime = LocalDateTime.parse(endTimeStr);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+        LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
+        LocalDateTime endTime = LocalDateTime.parse(endTimeStr, formatter);
 
         return new Event(startTime, endTime, full_location, city, name, descr);
     }

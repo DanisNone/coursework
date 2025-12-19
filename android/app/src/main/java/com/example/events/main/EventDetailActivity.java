@@ -1,4 +1,4 @@
-package com.example.events;
+package com.example.events.main;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.events.R;
 
 public class EventDetailActivity extends AppCompatActivity {
 
