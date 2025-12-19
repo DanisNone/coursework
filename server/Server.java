@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -48,7 +49,7 @@ class GetEventsHandler implements HttpHandler {
         } catch (DateTimeParseException e) {
             exchange.sendResponseHeaders(400, 0);
             try (OutputStream os = exchange.getResponseBody()) {
-                os.write("Invalid date format. Use yyyy-MM-ddTHH:mm".getBytes());
+                os.write("Invalid date format. Use dd.MM.yyyy HH:mm".getBytes());
             }
             return;
         }
@@ -62,7 +63,7 @@ class GetEventsHandler implements HttpHandler {
             exchange.sendResponseHeaders(200, response.getBytes().length);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes());
-           }
+            }
         } catch (SQLException e) {
             exchange.sendResponseHeaders(500, 0);
             exchange.getResponseBody().close();
@@ -77,7 +78,7 @@ class GetEventsHandler implements HttpHandler {
         Map<String, String> pairs = new HashMap<>();
 
         for (String q : queries) {
-            String[] kv = URLDecoder.decode(q, StandardCharsets.UTF_8).split("="); 
+            String[] kv = URLDecoder.decode(q, StandardCharsets.UTF_8).split("=");
             pairs.put(kv[0], kv.length > 1 ? kv[1] : "");
         }
         return pairs;
@@ -108,6 +109,55 @@ class GetCitiesHandler implements HttpHandler {
         }
     }
 }
+
+class AddEventHandler implements HttpHandler {
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+            exchange.sendResponseHeaders(405, -1);
+            return;
+        }
+
+        String body;
+        try (InputStream is = exchange.getRequestBody()) {
+            body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
+
+        try {
+            Event event = Event.fromJSON(body);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+            event.startTime = LocalDateTime.parse(event.startTime, formatter);
+            event.endTime = LocalDateTime.parse(event.endTime, formatter)
+
+            EventsBD eventsBD = EventsBD.get_instance();
+            eventsBD.insertEvent(event);
+
+            String response = "{\"status\":\"success\",\"message\":\"Event added\"}";
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+
+        } catch (DateTimeParseException e) {
+            String response = "{\"status\":\"error\",\"message\":\"Invalid date format. Use dd.MM.yyyy HH:mm\"}";
+            exchange.sendResponseHeaders(400, response.getBytes().length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+        } catch (SQLException e) {
+            exchange.sendResponseHeaders(500, 0);
+            exchange.getResponseBody().close();
+        } catch (Exception e) {
+            String response = "{\"status\":\"error\",\"message\":\"Invalid request body\"}";
+            exchange.sendResponseHeaders(400, response.getBytes().length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+        }
+    }
+}
+
 public class Server {
 
     private final InetSocketAddress socketAddress;
@@ -119,6 +169,7 @@ public class Server {
 
         httpServer.createContext("/get_events", new GetEventsHandler());
         httpServer.createContext("/get_cities", new GetCitiesHandler());
+        httpServer.createContext("/add_event", new AddEventHandler());
     }
 
     public void start() {
