@@ -75,6 +75,8 @@
                     android:layout_marginStart="8dp"
                     android:textSize="14sp"
                     android:textColor="#6B7280" />
+
+
             </LinearLayout>
             <!-- Описание события -->
             <TextView

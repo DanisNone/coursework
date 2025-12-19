@@ -1,2 +1,11 @@
 */*.class
 Main.class
+
+android/.gradle/
+android/.idea/
+server/.idea/
+android/local.properties
+android/build/reports/
+*.iml
+android/build/
+android/app/build/
