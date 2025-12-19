@@ -114,19 +114,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadCities() {
         executor.execute(() -> {
-            try {
-                String data = httpGet(BASE_URL + "get_cities");
-                String[] cities = data.split(",");
+            boolean loaded = false;
+            while (true) {
+                try {
+                    String data = httpGet(BASE_URL + "get_cities");
+                    String[] cities = data.split(",");
 
-                String[] result = new String[cities.length + 1];
-                result[0] = ANY_CITY;
-                System.arraycopy(cities, 0, result, 1, cities.length);
+                    String[] result = new String[cities.length + 1];
+                    result[0] = ANY_CITY;
+                    System.arraycopy(cities, 0, result, 1, cities.length);
+                    runOnUiThread(() -> setSpinnerData(result));
+                    loaded = true;
+                } catch (Exception e) {
+                    Log.e(TAG, "loadCities", e);
+                }
 
-                runOnUiThread(() -> setSpinnerData(result));
-
-
-            } catch (Exception e) {
-                Log.e(TAG, "loadCities", e);
+                if (loaded)
+                    break;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException err) {}
             }
         });
     }
