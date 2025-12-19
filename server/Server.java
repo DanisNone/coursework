@@ -126,9 +126,6 @@ class AddEventHandler implements HttpHandler {
 
         try {
             Event event = Event.fromJSON(body);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-            event.startTime = LocalDateTime.parse(event.startTime, formatter);
-            event.endTime = LocalDateTime.parse(event.endTime, formatter)
 
             EventsBD eventsBD = EventsBD.get_instance();
             eventsBD.insertEvent(event);

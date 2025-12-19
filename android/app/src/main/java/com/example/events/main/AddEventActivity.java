@@ -27,8 +27,7 @@ public class AddEventActivity extends AppCompatActivity {
 
     private final Calendar startCalendar = Calendar.getInstance();
     private final Calendar endCalendar = Calendar.getInstance();
-//    private final SimpleDateFormat dateFormat =
-//            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

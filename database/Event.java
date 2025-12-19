@@ -61,8 +61,10 @@ public class Event {
             }
         }
 
-        LocalDateTime startTime = LocalDateTime.parse(startTimeStr);
-        LocalDateTime endTime = LocalDateTime.parse(endTimeStr);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+        LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
+        LocalDateTime endTime = LocalDateTime.parse(endTimeStr, formatter);
 
         return new Event(startTime, endTime, full_location, city, name, descr);
     }
