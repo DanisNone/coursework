@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText etStartDate, etEndDate;
     private Button btnSearch;
+    private Button btnProfile;
     private RecyclerView rvEvents;
 
     private FloatingActionButton btnAddEvent;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupSearchButton();
         setupAddEventButton();
+        setupProfileButton();
 
         loadCities();
     }
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         etEndDate = findViewById(R.id.etEndDate);
         btnSearch = findViewById(R.id.btnSearch);
         btnAddEvent = findViewById(R.id.btnAddEvent);
+        btnProfile = findViewById(R.id.btnProfile);
         rvEvents = findViewById(R.id.rvEvents);
 
         setSpinnerData(new String[]{ANY_CITY});
@@ -161,6 +164,13 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("end_date", etEndDate.getText().toString());
 
             // Запускаем новую Activity
+            startActivity(intent);
+        });
+    }
+
+    private void setupProfileButton() {
+        btnProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
     }
