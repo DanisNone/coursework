@@ -30,8 +30,8 @@ class GetEventsHandler implements HttpHandler {
             exchange.sendResponseHeaders(405, -1);
             return;
         }
-
         URI requestURI = exchange.getRequestURI();
+        System.out.println("GetEventsHadlers; requestURI: " + requestURI.toString());
         Map<String, String> params = parseQuery(requestURI.getQuery());
 
         LocalDateTime start = null;
@@ -93,6 +93,7 @@ class GetCitiesHandler implements HttpHandler {
             exchange.sendResponseHeaders(405, -1);
             return;
         }
+        System.out.println("GetCitiesHadlers; requestURI: " + exchange.getRequestURI().toString());
 
         try {
             EventsBD eventsBD = EventsBD.get_instance();
@@ -123,6 +124,7 @@ class AddEventHandler implements HttpHandler {
             body = new String(is.readAllBytes(), StandardCharsets.UTF_8);
         }
 
+        System.out.println("AddEventHadlers; body: " + body);
         try {
             Event event = Event.fromJSON(body);
 
