@@ -213,6 +213,9 @@ public class MainActivity extends AppCompatActivity {
                     event.setStartTime(DateTimePickerHelper.removeTAndFormat(event.getStartTime()));
                     event.setEndTime(DateTimePickerHelper.removeTAndFormat(event.getEndTime()));
 
+                    if (!event.getDescription().isEmpty()) {
+                        event.setDescription(event.getDescription().substring(2));
+                    }
                     runOnUiThread(() -> rvEvents.setAdapter(new EventAdapter(events)));
                 }
             }
