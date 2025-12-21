@@ -33,6 +33,7 @@ import com.example.events.model.Event;
 import com.example.events.network.ApiClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.Calendar;
 import java.util.List;
@@ -125,12 +126,9 @@ public class MainActivity extends AppCompatActivity {
             while (true) {
                 try {
                     String data = httpGet(BASE_URL + "get_cities");
-                    String[] cities = data.split(",");
-
-                    String[] result = new String[cities.length + 1];
-                    result[0] = ANY_CITY;
-                    System.arraycopy(cities, 0, result, 1, cities.length);
-                    runOnUiThread(() -> setSpinnerData(result));
+                    Gson gson = new Gson();
+                    String[] cities = gson.fromJson(data, new TypeToken<String[]>(){}.getType());
+                    runOnUiThread(() -> setSpinnerData(cities));
                     loaded = true;
                 } catch (Exception e) {
                     Log.e(TAG, "loadCities", e);
