@@ -1,4 +1,4 @@
-package database;
+package com.coursework.server.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

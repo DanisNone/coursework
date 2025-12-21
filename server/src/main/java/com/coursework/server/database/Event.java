@@ -1,4 +1,4 @@
-package database;
+package com.coursework.server.database;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
