@@ -1,4 +1,4 @@
 #!/bin/bash
 
-mvn clean compile
-mvn exec:java -Dexec.mainClass="com.coursework.server.Main"
+cd server
+mvn clean compile exec:java -Dexec.mainClass="com.coursework.server.Main"
