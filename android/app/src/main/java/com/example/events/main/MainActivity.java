@@ -4,6 +4,7 @@ import static com.example.events.network.ApiClient.httpGet;
 import static com.example.events.network.ApiConfig.ANY_CITY;
 import static com.example.events.network.ApiConfig.BASE_URL;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.events.R;
 import com.example.events.UI.DateTimePickerHelper;
+import com.example.events.UI.ThemeManager;
 import com.example.events.model.Event;
 import com.example.events.network.ApiClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText etStartDate, etEndDate;
     private Button btnSearch;
     private Button btnProfile;
+    private Button btnSwitchTheme;
     private RecyclerView rvEvents;
 
     private FloatingActionButton btnAddEvent;
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applySavedTheme(this);
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -80,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         setupSearchButton();
         setupAddEventButton();
         setupProfileButton();
+        setupThemeButton();
 
         loadCities();
     }
@@ -92,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
         btnAddEvent = findViewById(R.id.btnAddEvent);
         btnProfile = findViewById(R.id.btnProfile);
+        btnSwitchTheme = findViewById(R.id.btnSwitchTheme);
         rvEvents = findViewById(R.id.rvEvents);
 
         setSpinnerData(new String[]{ANY_CITY});
@@ -170,6 +177,17 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void setupThemeButton() {
+        btnSwitchTheme.setOnClickListener(v -> switchTheme());
+    }
+
+    private void switchTheme() {
+        int theme = ThemeManager.getSavedTheme(this);
+        ThemeManager.saveTheme(this, theme == ThemeManager.THEME_DARK ? ThemeManager.THEME_LIGHT : ThemeManager.THEME_DARK);
+        ThemeManager.applyTheme(theme);
+        recreate();
     }
 
     private void loadEvents(String city, String start, String end) {
