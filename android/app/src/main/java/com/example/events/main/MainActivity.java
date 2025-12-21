@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -51,10 +52,11 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSearch;
     private Button btnProfile;
     private Button btnSwitchTheme;
-    private RecyclerView rvEvents;
-
     private FloatingActionButton btnAddEvent;
+    private ImageButton btnClearStart;
+    private ImageButton btnClearEnd;
 
+    private RecyclerView rvEvents;
 
     private final Calendar startCalendar = Calendar.getInstance();
     private final Calendar endCalendar = Calendar.getInstance();
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         setupAddEventButton();
         setupProfileButton();
         setupThemeButton();
+        setupClearStartButton();
+        setupClearEndButton();
 
         loadCities();
     }
@@ -100,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         btnAddEvent = findViewById(R.id.btnAddEvent);
         btnProfile = findViewById(R.id.btnProfile);
         btnSwitchTheme = findViewById(R.id.btnSwitchTheme);
+        btnClearStart = findViewById(R.id.btnClearStartDate);
+        btnClearEnd = findViewById(R.id.btnClearEndDate);
         rvEvents = findViewById(R.id.rvEvents);
 
         setSpinnerData(new String[]{ANY_CITY});
@@ -153,6 +159,17 @@ public class MainActivity extends AppCompatActivity {
                         etEndDate.getText().toString()
                 )
         );
+    }
+    private void setupClearStartButton() {
+        btnClearStart.setOnClickListener(v -> {
+            DateTimePickerHelper.clearDateTime(etStartDate, startCalendar);
+        });
+    }
+
+    private void setupClearEndButton() {
+        btnClearEnd.setOnClickListener(v -> {
+            DateTimePickerHelper.clearDateTime(etEndDate, endCalendar);
+        });
     }
 
     private void setupAddEventButton() {
