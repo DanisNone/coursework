@@ -121,24 +121,53 @@
                             android:text="Период"
                             android:textStyle="bold" />
 
-                        <EditText
-                            android:id="@+id/etStartDate"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_secondary"
-                            android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                            android:focusable="false"
-                            android:hint="Дата начала" />
+                            android:layout_height="match_parent">
+                            <EditText
+                                android:id="@+id/etStartDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/text_secondary"
+                                android:layout_marginRight="40dp"
+                                android:focusable="false"
+                                android:hint="Дата начала" />
 
-                        <EditText
-                            android:id="@+id/etEndDate"
+                            <ImageButton
+                                android:id="@+id/btnClearStartDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                                app:layout_constraintLeft_toRightOf="@id/etStartDate"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                tools:layout_editor_absoluteY="0dp" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_secondary"
-                            android:layout_marginTop="8dp"
-                            android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                            android:focusable="false"
-                            android:hint="Дата окончания" />
+                            android:layout_height="match_parent">
+                            <EditText
+                                android:id="@+id/etEndDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/text_secondary"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginRight="40dp"
+                                android:focusable="false"
+                                android:hint="Дата окончания" />
+                            <ImageButton
+                                android:id="@+id/btnClearEndDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                app:layout_constraintLeft_toRightOf="@id/etEndDate"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                                android:background="?attr/selectableItemBackgroundBorderless"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <!-- Кнопка -->
                         <Button
@@ -149,6 +178,7 @@
                             android:textColor="@color/text_primary"
                             android:layout_marginTop="16dp"
                             android:text="Найти мероприятия" />
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
