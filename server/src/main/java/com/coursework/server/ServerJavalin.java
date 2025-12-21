@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.coursework.server.database.Event;
+import com.coursework.server.database.EventDeserializer;
 import com.coursework.server.database.EventSerializer;
 import com.coursework.server.database.EventsBD;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -66,11 +68,40 @@ class GetEventsHandler implements Handler {
             List<Event> events = eventsBD.getEvents(start, end, city);
             Gson gson = new GsonBuilder().registerTypeAdapter(Event.class, new EventSerializer()).create();
             String response = gson.toJson(events);
-            System.out.println("\n".repeat(20)+response+"\n".repeat(20));
             ctx.status(HttpStatus.OK);
             ctx.result(response.getBytes(StandardCharsets.UTF_8));
         } catch (SQLException e) {
             ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
+
+class AddEventHandler implements Handler {
+
+    @Override
+    public void handle(Context ctx) {
+        String body = ctx.body();
+
+        try {
+            Gson gson = new GsonBuilder().registerTypeAdapter(Event.class, new EventDeserializer()).create();
+            Event event = gson.fromJson(body, new TypeToken<Event>(){}.getType());
+
+            EventsBD eventsBD = EventsBD.get_instance();
+            eventsBD.insertEvent(event);
+
+            String response = "{\"status\":\"success\",\"message\":\"Event added\"}";
+            ctx.status(HttpStatus.OK);
+            ctx.result(response.getBytes(StandardCharsets.UTF_8));
+        } catch (DateTimeParseException e) {
+            String response = "{\"status\":\"error\",\"message\":\"Invalid date format. Use dd.MM.yyyy HH:mm\"}";
+            ctx.status(HttpStatus.BAD_REQUEST);
+            ctx.result(response.getBytes(StandardCharsets.UTF_8));
+        } catch (SQLException e) {
+            ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            String response = "{\"status\":\"error\",\"message\":\"Invalid request body\"}";
+            ctx.status(HttpStatus.BAD_REQUEST);
+            ctx.result(response.getBytes(StandardCharsets.UTF_8));
         }
     }
 }
@@ -90,6 +121,7 @@ public class ServerJavalin {
         server.start(hostname, port);
         server.get("/get_cities", new GetCitiesHadler());
         server.get("/get_events", new GetEventsHandler());
+        server.post("/add_event", new AddEventHandler());
     }
 
     public String getAddress() {
