@@ -38,12 +38,7 @@ public class Event {
                 ", descr='" + descr + '\'' +
                 '}';
     }
-    public String toJSON() {
-        return String.format(
-                "{\"startTime\":\"%s\",\"endTime\":\"%s\",\"full_location\":\"%s\",\"city\":\"%s\",\"name\":\"%s\", \"descr\": \"%s\"}",
-                startTime, endTime, full_location, city, name, descr
-        );
-    }
+
     public static Event fromJSON(String json) {
         json = json.trim().substring(1, json.length() - 1);
 
