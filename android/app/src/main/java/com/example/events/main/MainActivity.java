@@ -32,11 +32,8 @@ import com.example.events.network.ApiClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -49,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText etStartDate, etEndDate;
     private Button btnSearch;
+    private Button btnProfile;
     private RecyclerView rvEvents;
 
     private FloatingActionButton btnAddEvent;
@@ -81,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupSearchButton();
         setupAddEventButton();
+        setupProfileButton();
 
         loadCities();
     }
@@ -92,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         etEndDate = findViewById(R.id.etEndDate);
         btnSearch = findViewById(R.id.btnSearch);
         btnAddEvent = findViewById(R.id.btnAddEvent);
+        btnProfile = findViewById(R.id.btnProfile);
         rvEvents = findViewById(R.id.rvEvents);
 
         setSpinnerData(new String[]{ANY_CITY});
@@ -165,11 +165,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setupProfileButton() {
+        btnProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
+    }
+
     private void loadEvents(String city, String start, String end) {
         ApiClient.getEventsAsync(city, start, end, new ApiClient.EventsCallback() {
             @Override
             public void onSuccess(List<Event> events) {
-                runOnUiThread(() -> rvEvents.setAdapter(new EventAdapter(events)));
+                for (Event event : events) {
+                    event.setStartTime(DateTimePickerHelper.removeTAndFormat(event.getStartTime()));
+                    event.setEndTime(DateTimePickerHelper.removeTAndFormat(event.getEndTime()));
+
+                    runOnUiThread(() -> rvEvents.setAdapter(new EventAdapter(events)));
+                }
             }
 
             @Override
