@@ -32,11 +32,8 @@ import com.example.events.network.ApiClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -179,7 +176,12 @@ public class MainActivity extends AppCompatActivity {
         ApiClient.getEventsAsync(city, start, end, new ApiClient.EventsCallback() {
             @Override
             public void onSuccess(List<Event> events) {
-                runOnUiThread(() -> rvEvents.setAdapter(new EventAdapter(events)));
+                for (Event event : events) {
+                    event.setStartTime(DateTimePickerHelper.removeTAndFormat(event.getStartTime()));
+                    event.setEndTime(DateTimePickerHelper.removeTAndFormat(event.getEndTime()));
+
+                    runOnUiThread(() -> rvEvents.setAdapter(new EventAdapter(events)));
+                }
             }
 
             @Override
