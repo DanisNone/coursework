@@ -13,6 +13,17 @@ public class DateTimePickerHelper {
     public static final SimpleDateFormat dateFormat =
             new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
 
+    public static String removeTAndFormat(String isoDate) {
+        if (isoDate == null) return null;
+
+        // Если есть 'T', заменяем его на пробел
+        if (isoDate.contains("T")) {
+            return isoDate.replace('T', ' ');
+        }
+
+        return isoDate;
+    }
+
     public static void setupDateTimePicker(
             Context context,
             EditText editText,
