@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="purple">#8E24AA</color>
+    <!-- Основные цвета -->
+    <color name="primary_color">#7986CB</color>       <!-- Индиго -->
+    <color name="primary_dark">#303F9F</color>        <!-- Темный индиго -->
+    <color name="accent_color">#FF4081</color>        <!-- Розовый -->
+    
+    <!-- Фоны -->
+    <color name="background">#fbf9fb</color>          <!-- Белый -->
+    <color name="surface">#f5ebf5</color>             <!-- Поверхность -->
+    <color name="card_background">#FFFFFF</color>     <!-- Карточки -->
+    
+    <!-- Текст -->
+    <color name="text_primary">#DE000000</color>      <!-- Черный 87% -->
+    <color name="text_secondary">#8A000000</color>    <!-- Черный 54% -->
+    <color name="text_hint">#61000000</color>         <!-- Черный 38% -->
+    
+    <!-- Ваши цвета из XML -->
+    <color name="title_text">#000000</color>          <!-- Для tvTitle -->
+    <color name="events_text">#9E9E9E</color>         <!-- Для tvEventsTitle -->
+    <color name="button_text">#FFFFFF</color>         <!-- Для кнопки -->
+    <color name="indigo">#3F51B5</color>              <!-- Цвет кнопки -->
 </resources>

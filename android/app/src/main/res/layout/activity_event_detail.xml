@@ -17,6 +17,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:padding="16dp"
+            android:backgroundTint="@color/surface"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -27,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#1F2937" />
+                android:textColor="@color/text_primary" />
 
             <!-- Дата и время -->
             <LinearLayout
@@ -50,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textSize="14sp"
-                    android:textColor="#6B7280" />
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
 
             <!-- Локация -->
@@ -74,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textSize="14sp"
-                    android:textColor="#6B7280" />
+                    android:textColor="@color/text_secondary" />
 
 
             </LinearLayout>
@@ -85,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:textSize="14sp"
-                android:textColor="#374151"
+                android:textColor="@color/text_primary"
                 android:lineSpacingExtra="4dp"
                 android:maxLines="10"
                 android:ellipsize="end" />
