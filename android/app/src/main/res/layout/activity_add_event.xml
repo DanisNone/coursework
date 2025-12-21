@@ -6,7 +6,7 @@
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="?attr/colorBackground">
 
     <!-- Кнопка назад -->
     <LinearLayout
@@ -47,7 +47,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:padding="16dp"
-            android:background="@color/surface"
+            android:background="?attr/colorSurface"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -56,14 +56,14 @@
             <TextView
                 android:text="Название *"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <EditText
                 android:id="@+id/etEventName"
                 android:hint="Введите название"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/textSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
@@ -72,7 +72,7 @@
             <TextView
                 android:text="Описание"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimary"
                 android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -81,7 +81,7 @@
                 android:id="@+id/etEventDescription"
                 android:hint="Введите описание"
                 android:inputType="textMultiLine"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/textSecondary"
                 android:minLines="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
             <TextView
                 android:text="Время начала *"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimary"
                 android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -101,7 +101,7 @@
                 android:id="@+id/etStartTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/textSecondary"
                 android:layout_marginTop="4dp"
                 android:drawableEnd="@android:drawable/ic_menu_my_calendar"
                 android:focusable="false"
@@ -110,7 +110,7 @@
             <TextView
                 android:text="Время окончания *"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimary"
                 android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -120,7 +120,7 @@
                 android:hint="Выберите дату и время окончания"
                 android:focusable="false"
                 android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/textSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
@@ -129,7 +129,7 @@
             <TextView
                 android:text="Город *"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimary"
                 android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -137,7 +137,7 @@
             <EditText
                 android:id="@+id/etEventCity"
                 android:hint="Введите город"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/textSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
@@ -146,7 +146,7 @@
             <TextView
                 android:text="Местоположение *"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimary"
                 android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -154,7 +154,7 @@
             <EditText
                 android:id="@+id/etEventLocation"
                 android:hint="Введите адрес"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/textSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
@@ -163,7 +163,7 @@
             <Button
                 android:id="@+id/btnSave"
                 android:text="Сохранить"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimary"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/primary_color"
                 android:layout_width="match_parent"

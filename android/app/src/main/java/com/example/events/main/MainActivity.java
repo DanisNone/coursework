@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.events.R;
 import com.example.events.UI.DateTimePickerHelper;
-import com.example.events.UI.ThemeManager;
 import com.example.events.model.Event;
 import com.example.events.network.ApiClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText etStartDate, etEndDate;
     private Button btnSearch;
     private Button btnProfile;
-    private Button btnSwitchTheme;
     private FloatingActionButton btnAddEvent;
     private ImageButton btnClearStart;
     private ImageButton btnClearEnd;
@@ -61,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeManager.applySavedTheme(this);
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -81,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         setupSearchButton();
         setupAddEventButton();
         setupProfileButton();
-        setupThemeButton();
         setupClearStartButton();
         setupClearEndButton();
 
@@ -96,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
         btnAddEvent = findViewById(R.id.btnAddEvent);
         btnProfile = findViewById(R.id.btnProfile);
-        btnSwitchTheme = findViewById(R.id.btnSwitchTheme);
         btnClearStart = findViewById(R.id.btnClearStartDate);
         btnClearEnd = findViewById(R.id.btnClearEndDate);
         rvEvents = findViewById(R.id.rvEvents);
@@ -184,17 +180,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
-    }
-
-    private void setupThemeButton() {
-        btnSwitchTheme.setOnClickListener(v -> switchTheme());
-    }
-
-    private void switchTheme() {
-        int theme = ThemeManager.getSavedTheme(this);
-        ThemeManager.saveTheme(this, theme == ThemeManager.THEME_DARK ? ThemeManager.THEME_LIGHT : ThemeManager.THEME_DARK);
-        ThemeManager.applyTheme(theme);
-        recreate();
     }
 
     private void loadEvents(String city, String start, String end) {
