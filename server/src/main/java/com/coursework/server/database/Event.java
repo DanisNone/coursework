@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 public class Event {
     static public final String ANY_CITY = "Любой";
+    static public final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
     public LocalDateTime startTime;
     public LocalDateTime endTime;
     public String full_location;
@@ -63,7 +65,6 @@ public class Event {
             }
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
         LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
         LocalDateTime endTime = LocalDateTime.parse(endTimeStr, formatter);
