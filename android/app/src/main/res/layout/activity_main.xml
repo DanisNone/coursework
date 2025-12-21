@@ -153,7 +153,7 @@
         android:layout_margin="16dp"
         android:contentDescription="Добавить мероприятие"
         app:srcCompat="@android:drawable/ic_input_add"
-        app:backgroundTint="#2196F3"
+        app:backgroundTint="@color/purple"
         app:tint="#FFFFFF"
         app:layout_anchor="@id/rvEvents"
         app:layout_anchorGravity="bottom|right|end"/>
