@@ -162,13 +162,13 @@ public class MainActivity extends AppCompatActivity {
     }
     private void setupClearStartButton() {
         btnClearStart.setOnClickListener(v -> {
-            DateTimePickerHelper.clearDateTime(etStartDate, startCalendar);
+            DateTimePickerHelper.clearDateTime(etStartDate);
         });
     }
 
     private void setupClearEndButton() {
         btnClearEnd.setOnClickListener(v -> {
-            DateTimePickerHelper.clearDateTime(etEndDate, endCalendar);
+            DateTimePickerHelper.clearDateTime(etEndDate);
         });
     }
 
