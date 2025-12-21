@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Event {
+    static public final String ANY_CITY = "Любой";
     public LocalDateTime startTime;
     public LocalDateTime endTime;
     public String full_location;
