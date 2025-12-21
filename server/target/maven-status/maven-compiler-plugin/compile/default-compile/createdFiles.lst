@@ -1,0 +1,7 @@
+com\coursework\server\Main.class
+com\coursework\server\database\EventsBD.class
+com\coursework\server\AddEventHandler.class
+com\coursework\server\Server.class
+com\coursework\server\GetEventsHandler.class
+com\coursework\server\GetCitiesHandler.class
+com\coursework\server\database\Event.class
