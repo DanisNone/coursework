@@ -15,7 +15,13 @@ public class EventsBD {
     static private EventsBD instance;
 
     private Connection conn;
-    private EventsBD() throws SQLException{
+    private EventsBD() throws SQLException {
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new SQLException("SQLite JDBC Driver not found");
+        }
         String url = "jdbc:sqlite:database.db";
         conn = DriverManager.getConnection(url);
         createTableIfNotExists();

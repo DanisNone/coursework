@@ -9,3 +9,4 @@ android/build/reports/
 *.iml
 android/build/
 android/app/build/
+server/target
