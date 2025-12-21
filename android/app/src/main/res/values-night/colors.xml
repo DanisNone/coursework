@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Основные цвета (можно оставить те же или сделать светлее) -->
+    <color name="primary_color">#7986CB</color>       <!-- Светлый индиго -->
+    <color name="primary_dark">#5C6BC0</color>        <!-- Индиго -->
+    <color name="accent_color">#FF80AB</color>        <!-- Светлый розовый -->
+    
+    <!-- Фоны (ТЕМНЫЕ!) -->
+    <color name="background">#121212</color>          <!-- Темно-серый -->
+    <color name="surface">#1E1E1E</color>             <!-- Поверхность -->
+    <color name="card_background">#1E1E1E</color>     <!-- Карточки -->
+    
+    <!-- Текст (СВЕТЛЫЙ на темном фоне!) -->
+    <color name="text_primary">#FFFFFFFF</color>      <!-- Белый 100% -->
+    <color name="text_secondary">#B3FFFFFF</color>    <!-- Белый 70% -->
+    <color name="text_hint">#80FFFFFF</color>         <!-- Белый 50% -->
+    
+    <!-- Ваши цвета из XML -->
+    <color name="title_text">#FFFFFF</color>          <!-- Белый текст -->
+    <color name="events_text">#B0B0B0</color>         <!-- Светло-серый -->
+    <color name="button_text">#000000</color>         <!-- Черный текст на кнопке -->
+    <color name="indigo">#7986CB</color>              <!-- Светлее индиго -->
+</resources>
