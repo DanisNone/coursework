@@ -48,7 +48,7 @@ class GetEventsHandler implements HttpHandler {
         } catch (DateTimeParseException e) {
             exchange.sendResponseHeaders(400, 0);
             try (OutputStream os = exchange.getResponseBody()) {
-                os.write("Invalid date format. Use dd.MM.yyyy HH:mm".getBytes());
+                os.write("Invalid date format. Use dd.MM.yyyy HH:mm".getBytes(StandardCharsets.UTF_8));
             }
             return;
         }
@@ -59,9 +59,9 @@ class GetEventsHandler implements HttpHandler {
             String response = "[" + events.stream()
                     .map(Event::toJSON)
                     .collect(Collectors.joining(",")) + "]";
-            exchange.sendResponseHeaders(200, response.getBytes().length);
+            exchange.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
             try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
+                os.write(response.getBytes(StandardCharsets.UTF_8));
             }
         } catch (SQLException e) {
             exchange.sendResponseHeaders(500, 0);
@@ -99,9 +99,9 @@ class GetCitiesHandler implements HttpHandler {
             EventsBD eventsBD = EventsBD.get_instance();
             List<String> cities = eventsBD.getAllCity();
             String response = cities.stream().collect(Collectors.joining(","));
-            exchange.sendResponseHeaders(200, response.getBytes().length);
+            exchange.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
             try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
+                os.write(response.getBytes(StandardCharsets.UTF_8));
             }
         } catch (SQLException e) {
             exchange.sendResponseHeaders(500, 0);
@@ -132,25 +132,25 @@ class AddEventHandler implements HttpHandler {
             eventsBD.insertEvent(event);
 
             String response = "{\"status\":\"success\",\"message\":\"Event added\"}";
-            exchange.sendResponseHeaders(200, response.getBytes().length);
+            exchange.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
             try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
+                os.write(response.getBytes(StandardCharsets.UTF_8));
             }
 
         } catch (DateTimeParseException e) {
             String response = "{\"status\":\"error\",\"message\":\"Invalid date format. Use dd.MM.yyyy HH:mm\"}";
-            exchange.sendResponseHeaders(400, response.getBytes().length);
+            exchange.sendResponseHeaders(400, response.getBytes(StandardCharsets.UTF_8).length);
             try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
+                os.write(response.getBytes(StandardCharsets.UTF_8));
             }
         } catch (SQLException e) {
             exchange.sendResponseHeaders(500, 0);
             exchange.getResponseBody().close();
         } catch (Exception e) {
             String response = "{\"status\":\"error\",\"message\":\"Invalid request body\"}";
-            exchange.sendResponseHeaders(400, response.getBytes().length);
+            exchange.sendResponseHeaders(400, response.getBytes(StandardCharsets.UTF_8).length);
             try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
+                os.write(response.getBytes(StandardCharsets.UTF_8));
             }
         }
     }
