@@ -13,8 +13,9 @@ public class Event {
     public String city;
     public String name;
     public String descr;
+    public long ownerId;
 
-    public Event(LocalDateTime startTime, LocalDateTime endTime, String full_location, String city, String name, String descr) {
+    public Event(LocalDateTime startTime, LocalDateTime endTime, String full_location, String city, String name, String descr, long ownerId) {
         if (endTime.isEqual(startTime) || endTime.isBefore(startTime)) {
             throw new IllegalArgumentException("endTime >= startTime");
         }
@@ -25,6 +26,7 @@ public class Event {
         this.city = city;
         this.name = name;
         this.descr = descr;
+        this.ownerId = ownerId;
     }
 
     @Override

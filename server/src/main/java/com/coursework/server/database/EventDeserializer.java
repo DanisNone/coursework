@@ -18,7 +18,8 @@ public class EventDeserializer implements JsonDeserializer<Event> {
         String city = obj.getAsJsonPrimitive("city").getAsString();
         String name = obj.getAsJsonPrimitive("name").getAsString();
         String descr = obj.getAsJsonPrimitive("descr").getAsString();
+        long ownerId = obj.getAsJsonPrimitive("ownerId").getAsLong();
         
-        return new Event(startTime, endTime, full_location, city, name, descr);
+        return new Event(startTime, endTime, full_location, city, name, descr, ownerId);
     }
 }
