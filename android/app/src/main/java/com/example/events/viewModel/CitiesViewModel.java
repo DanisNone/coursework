@@ -34,7 +34,7 @@ public class CitiesViewModel extends ViewModel {
                 cities.postValue(Arrays.asList(c));
                 break;
             } catch (Exception e) {
-                Log.i("CitiesViewModel", "fail load cities: " + e.toString());
+                Log.i("CitiesViewModel", "fail load cities: " + e);
             }
             SystemClock.sleep(1000);
         }

@@ -106,9 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         rvEvents.setLayoutManager(new LinearLayoutManager(this));
         EventsViewModel eventsView = new ViewModelProvider(this).get(EventsViewModel.class);
-        eventsView.getEvents().observe(this, events -> {
-            rvEvents.setAdapter(new EventAdapter(events));
-        });
+        eventsView.getEvents().observe(this, events -> rvEvents.setAdapter(new EventAdapter(events)));
     }
 
     private void setSpinnerData(List<String> cities) {
@@ -133,15 +131,11 @@ public class MainActivity extends AppCompatActivity {
         );
     }
     private void setupClearStartButton() {
-        btnClearStart.setOnClickListener(v -> {
-            DateTimePickerHelper.clearDateTime(etStartDate);
-        });
+        btnClearStart.setOnClickListener(v -> DateTimePickerHelper.clearDateTime(etStartDate));
     }
 
     private void setupClearEndButton() {
-        btnClearEnd.setOnClickListener(v -> {
-            DateTimePickerHelper.clearDateTime(etEndDate);
-        });
+        btnClearEnd.setOnClickListener(v -> DateTimePickerHelper.clearDateTime(etEndDate));
     }
 
     private void setupAddEventButton() {

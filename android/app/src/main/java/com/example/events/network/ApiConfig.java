@@ -2,8 +2,6 @@ package com.example.events.network;
 
 import android.net.Uri;
 
-import com.example.events.model.Event;
-
 public class ApiConfig {
     public static final String BASE_URL = "http://193.108.113.136:8080/";
     public static final String ANY_CITY = "Любой";
