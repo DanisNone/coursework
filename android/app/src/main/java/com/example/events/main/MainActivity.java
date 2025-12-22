@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.events.R;
 import com.example.events.UI.DateTimePickerHelper;
 import com.example.events.model.Event;
-import com.example.events.model.NightModeView;
+import com.example.events.UI.NightModeView;
 import com.example.events.network.ApiClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package com.example.events.model;
+package com.example.events.UI;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModel;
