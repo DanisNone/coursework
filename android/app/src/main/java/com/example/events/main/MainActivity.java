@@ -4,14 +4,10 @@ import static com.example.events.network.ApiClient.httpGet;
 import static com.example.events.network.ApiConfig.ANY_CITY;
 import static com.example.events.network.ApiConfig.BASE_URL;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,16 +17,18 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.events.R;
 import com.example.events.UI.DateTimePickerHelper;
-import com.example.events.UI.ThemeManager;
 import com.example.events.model.Event;
+import com.example.events.UI.NightModeView;
 import com.example.events.network.ApiClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "EventsApp";
 
     private Spinner spinnerCity;
-    private boolean citiesLoaded = false;
 
     private EditText etStartDate, etEndDate;
     private Button btnSearch;
@@ -62,13 +59,13 @@ public class MainActivity extends AppCompatActivity {
     private final Calendar endCalendar = Calendar.getInstance();
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final Gson gson = new Gson();
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeManager.applySavedTheme(this);
+        NightModeView nightMode = new ViewModelProvider(this).get(NightModeView.class);
+        AppCompatDelegate.setDefaultNightMode(nightMode.getMode());
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -123,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCity.setAdapter(adapter);
-        citiesLoaded = true;
     }
 
     private void loadCities() {
@@ -199,9 +195,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchTheme() {
-        int theme = ThemeManager.getSavedTheme(this);
-        ThemeManager.saveTheme(this, theme == ThemeManager.THEME_DARK ? ThemeManager.THEME_LIGHT : ThemeManager.THEME_DARK);
-        ThemeManager.applyTheme(theme);
+        boolean is_dark = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        NightModeView nightMode = new ViewModelProvider(this).get(NightModeView.class);
+        if (is_dark)
+            nightMode.setMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else
+            nightMode.setMode(AppCompatDelegate.MODE_NIGHT_YES);
         recreate();
     }
 
