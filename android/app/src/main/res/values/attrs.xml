@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Основные -->
+    <attr name="colorPrimary" format="color"/>
+    <attr name="colorPrimaryDark" format="color"/>
+    <attr name="colorAccent" format="color"/>
+
+    <!-- Фоны -->
+    <attr name="colorBackground" format="color"/>
+    <attr name="colorSurface" format="color"/>
+    <attr name="colorCardBackground" format="color"/>
+
+    <!-- Текст -->
+    <attr name="textPrimary" format="color"/>
+    <attr name="textSecondary" format="color"/>
+    <attr name="textHint" format="color"/>
+
+    <!-- Кастом -->
+    <attr name="titleTextColor" format="color"/>
+    <attr name="eventsTextColor" format="color"/>
+    <attr name="buttonTextColor" format="color"/>
+    <attr name="buttonBackgroundColor" format="color"/>
+
+</resources>

@@ -45,9 +45,7 @@ public class AddEventActivity extends AppCompatActivity {
         });
         initViews();
 
-        Calendar startCalendar = Calendar.getInstance();
         DateTimePickerHelper.setupDateTimePicker(this, etStartTime, startCalendar);
-        Calendar endCalendar = Calendar.getInstance();
         DateTimePickerHelper.setupDateTimePicker(this, etEndTime, endCalendar);
 
 
@@ -61,7 +59,7 @@ public class AddEventActivity extends AppCompatActivity {
     private void setCityFromIntent() {
         Intent intent = getIntent();
         String selectedCity = intent.getStringExtra("selected_city");
-        if (selectedCity != null && !selectedCity.equals("Любой")) {
+        if (selectedCity != null && !selectedCity.equals(ApiConfig.ANY_CITY)) {
             etEventCity.setText(selectedCity);
         }
     }

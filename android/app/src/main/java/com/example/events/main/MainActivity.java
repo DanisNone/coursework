@@ -4,14 +4,9 @@ import static com.example.events.network.ApiClient.httpGet;
 import static com.example.events.network.ApiConfig.ANY_CITY;
 import static com.example.events.network.ApiConfig.BASE_URL;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "EventsApp";
 
     private Spinner spinnerCity;
-    private boolean citiesLoaded = false;
 
     private EditText etStartDate, etEndDate;
     private Button btnSearch;
@@ -62,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     private final Calendar endCalendar = Calendar.getInstance();
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final Gson gson = new Gson();
 
 
 
@@ -123,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCity.setAdapter(adapter);
-        citiesLoaded = true;
     }
 
     private void loadCities() {

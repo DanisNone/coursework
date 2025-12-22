@@ -17,7 +17,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:padding="16dp"
-            android:backgroundTint="@color/surface"
+            android:backgroundTint="?attr/colorSurface"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textColor="?attr/textPrimary" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textSize="14sp"
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="?attr/textSecondary" />
             </LinearLayout>
 
             <LinearLayout
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:textSize="14sp"
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="?attr/textSecondary" />
 
 
             </LinearLayout>
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:textSize="14sp"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimary"
                 android:lineSpacingExtra="4dp"
                 android:maxLines="10"
                 android:ellipsize="end" />
