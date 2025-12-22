@@ -5,6 +5,7 @@ import static com.example.events.network.ApiConfig.ANY_CITY;
 import static com.example.events.network.ApiConfig.BASE_URL;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -16,16 +17,18 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.events.R;
 import com.example.events.UI.DateTimePickerHelper;
-import com.example.events.UI.ThemeManager;
 import com.example.events.model.Event;
+import com.example.events.model.NightModeView;
 import com.example.events.network.ApiClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -61,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeManager.applySavedTheme(this);
+        NightModeView nightMode = new ViewModelProvider(this).get(NightModeView.class);
+        AppCompatDelegate.setDefaultNightMode(nightMode.getMode());
 
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -191,9 +195,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchTheme() {
-        int theme = ThemeManager.getSavedTheme(this);
-        ThemeManager.saveTheme(this, theme == ThemeManager.THEME_DARK ? ThemeManager.THEME_LIGHT : ThemeManager.THEME_DARK);
-        ThemeManager.applyTheme(theme);
+        boolean is_dark = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        NightModeView nightMode = new ViewModelProvider(this).get(NightModeView.class);
+        if (is_dark)
+            nightMode.setMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else
+            nightMode.setMode(AppCompatDelegate.MODE_NIGHT_YES);
         recreate();
     }
 
