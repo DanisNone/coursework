@@ -17,6 +17,28 @@
         android:elevation="0dp"
         app:elevation="0dp">
 
+        <LinearLayout
+            android:id="@+id/fullHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:gravity="right"
+            android:orientation="horizontal"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+            <!-- enterAlwaysCollapsed = виден только вверху -->
+            <Button
+                android:id="@+id/btnSwitchTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:backgroundTint="@color/primary_color"
+                android:textColor="@color/text_primary"
+                android:text="Тема" />
+
+        </LinearLayout>
+
+
+
         <!-- CollapsingToolbarLayout - УБИРАЕМ фон и тени -->
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -47,21 +69,9 @@
                     android:textColor="@color/text_primary"
                     android:text="Профиль"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/btnSwitchTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="@color/primary_color"
-                    android:textColor="@color/text_primary"
-                    android:text="Тема"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
 
                 <!-- Заголовок -->
                 <TextView
@@ -73,7 +83,7 @@
                     android:layout_margin="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/btnProfile"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 
                 <!-- Карточка фильтров -->
@@ -131,7 +141,8 @@
                                 android:textColor="@color/text_secondary"
                                 android:layout_marginRight="40dp"
                                 android:focusable="false"
-                                android:hint="Дата начала" />
+                                android:hint="Дата начала"
+                                tools:ignore="MissingConstraints" />
 
                             <ImageButton
                                 android:id="@+id/btnClearStartDate"
@@ -157,7 +168,8 @@
                                 android:layout_marginTop="8dp"
                                 android:layout_marginRight="40dp"
                                 android:focusable="false"
-                                android:hint="Дата окончания" />
+                                android:hint="Дата окончания"
+                                tools:ignore="MissingConstraints" />
                             <ImageButton
                                 android:id="@+id/btnClearEndDate"
                                 android:layout_width="wrap_content"
