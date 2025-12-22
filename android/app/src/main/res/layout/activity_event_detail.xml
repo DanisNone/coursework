@@ -21,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Название события -->
             <TextView
                 android:id="@+id/tvEventName"
                 android:layout_width="match_parent"
@@ -30,7 +29,6 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_primary" />
 
-            <!-- Дата и время -->
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_marginTop="8dp"
@@ -54,7 +52,6 @@
                     android:textColor="@color/text_secondary" />
             </LinearLayout>
 
-            <!-- Локация -->
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_marginTop="6dp"
@@ -79,7 +76,6 @@
 
 
             </LinearLayout>
-            <!-- Описание события -->
             <TextView
                 android:id="@+id/tvEventDescr"
                 android:layout_width="match_parent"

@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <!-- Кнопка назад -->
     <LinearLayout
         android:orientation="horizontal"
         android:gravity="center_vertical"
@@ -34,7 +33,6 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <!-- Форма добавления -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +50,6 @@
             android:layout_height="wrap_content">
 
 
-            <!-- Название -->
             <TextView
                 android:text="Название *"
                 android:textStyle="bold"
@@ -68,7 +65,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
 
-            <!-- Описание -->
             <TextView
                 android:text="Описание"
                 android:textStyle="bold"
@@ -87,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
 
-            <!-- Время начала -->
             <TextView
                 android:text="Время начала *"
                 android:textStyle="bold"
@@ -96,7 +91,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <!-- Время окончания -->
             <EditText
                 android:id="@+id/etStartTime"
                 android:layout_width="match_parent"
@@ -125,7 +119,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
 
-            <!-- Город -->
             <TextView
                 android:text="Город *"
                 android:textStyle="bold"
@@ -142,7 +135,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
 
-            <!-- Местоположение -->
             <TextView
                 android:text="Местоположение *"
                 android:textStyle="bold"
@@ -159,7 +151,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"/>
 
-            <!-- Кнопка сохранения -->
             <Button
                 android:id="@+id/btnSave"
                 android:text="Сохранить"
