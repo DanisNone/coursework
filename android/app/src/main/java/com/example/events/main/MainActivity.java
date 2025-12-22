@@ -1,13 +1,8 @@
 package com.example.events.main;
 
-import static com.example.events.network.ApiClient.httpGet;
-import static com.example.events.network.ApiConfig.ANY_CITY;
-import static com.example.events.network.ApiConfig.BASE_URL;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,9 +25,9 @@ import com.example.events.UI.DateTimePickerHelper;
 import com.example.events.model.Event;
 import com.example.events.UI.NightModeView;
 import com.example.events.network.ApiClient;
+import com.example.events.viewModel.CitiesViewModel;
+import com.example.events.viewModel.EventsViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.Calendar;
 import java.util.List;
@@ -89,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
         setupClearStartButton();
         setupClearEndButton();
 
-        loadCities();
+        CitiesViewModel cities = new ViewModelProvider(this).get(CitiesViewModel.class);
+        executor.execute(cities::loadCities);
+        cities.getCities().observe(this, this::setSpinnerData);
     }
 
 
@@ -104,15 +101,17 @@ public class MainActivity extends AppCompatActivity {
         btnClearStart = findViewById(R.id.btnClearStartDate);
         btnClearEnd = findViewById(R.id.btnClearEndDate);
         rvEvents = findViewById(R.id.rvEvents);
-
-        setSpinnerData(new String[]{ANY_CITY});
     }
 
     private void setupRecyclerView() {
         rvEvents.setLayoutManager(new LinearLayoutManager(this));
+        EventsViewModel eventsView = new ViewModelProvider(this).get(EventsViewModel.class);
+        eventsView.getEvents().observe(this, events -> {
+            rvEvents.setAdapter(new EventAdapter(events));
+        });
     }
 
-    private void setSpinnerData(String[] cities) {
+    private void setSpinnerData(List<String> cities) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -120,29 +119,6 @@ public class MainActivity extends AppCompatActivity {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCity.setAdapter(adapter);
-    }
-
-    private void loadCities() {
-        executor.execute(() -> {
-            boolean loaded = false;
-            while (true) {
-                try {
-                    String data = httpGet(BASE_URL + "get_cities");
-                    Gson gson = new Gson();
-                    String[] cities = gson.fromJson(data, new TypeToken<String[]>(){}.getType());
-                    runOnUiThread(() -> setSpinnerData(cities));
-                    loaded = true;
-                } catch (Exception e) {
-                    Log.e(TAG, "loadCities", e);
-                }
-
-                if (loaded)
-                    break;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException err) {}
-            }
-        });
     }
 
 
@@ -205,18 +181,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadEvents(String city, String start, String end) {
+        EventsViewModel eventsView = new ViewModelProvider(this).get(EventsViewModel.class);
         ApiClient.getEventsAsync(city, start, end, new ApiClient.EventsCallback() {
             @Override
             public void onSuccess(List<Event> events) {
-                for (Event event : events) {
-                    event.setStartTime(DateTimePickerHelper.removeTAndFormat(event.getStartTime()));
-                    event.setEndTime(DateTimePickerHelper.removeTAndFormat(event.getEndTime()));
-
-                    if (!event.getDescription().isEmpty()) {
-                        event.setDescription(event.getDescription().substring(2));
-                    }
-                    runOnUiThread(() -> rvEvents.setAdapter(new EventAdapter(events)));
-                }
+                eventsView.setEvents(events);
             }
 
             @Override
