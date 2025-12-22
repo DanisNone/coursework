@@ -58,7 +58,7 @@ public class EventsDB {
             String event_city = rs.getString("city");
             String name = rs.getString("name");
             String descr = rs.getString("descr");
-            long ownerId = rs.getLong("ownerId");
+            long ownerId = rs.getLong("owner_id");
             Event event = new Event(startTime, endTime, full_location, event_city, name, descr, ownerId);
             events.add(event);
         }
