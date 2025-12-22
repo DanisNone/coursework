@@ -31,6 +31,7 @@ class GetCitiesHadler implements Handler {
             ctx.status(HttpStatus.OK);
             ctx.result(gson.toJson(cities).getBytes(StandardCharsets.UTF_8));
         } catch (SQLException e) {
+            ctx.result(e.getMessage());
             ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -67,6 +68,7 @@ class GetEventsHandler implements Handler {
             ctx.status(HttpStatus.OK);
             ctx.result(response.getBytes(StandardCharsets.UTF_8));
         } catch (SQLException e) {
+            ctx.result(e.getMessage());
             ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -93,6 +95,7 @@ class AddEventHandler implements Handler {
             ctx.status(HttpStatus.BAD_REQUEST);
             ctx.result(response.getBytes(StandardCharsets.UTF_8));
         } catch (SQLException e) {
+            ctx.result(e.getMessage());
             ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             String response = "{\"status\":\"error\",\"message\":\"Invalid request body\"}";
