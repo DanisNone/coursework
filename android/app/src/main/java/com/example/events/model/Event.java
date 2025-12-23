@@ -8,9 +8,9 @@ public class Event {
     private String city;
     private String name;
     private String descr;
-    private long ownerId;
+    private int ownerId;
 
-    public Event(String startTime, String endTime, String full_location, String city, String name, String descr, long ownerId){
+    public Event(String startTime, String endTime, String full_location, String city, String name, String descr, int ownerId){
         this.startTime = startTime;
         this.endTime = endTime;
         this.full_location = full_location;
@@ -18,6 +18,15 @@ public class Event {
         this.name = name;
         this.descr = descr;
         this.ownerId = ownerId;
+    }
+    public Event(Event event) {
+        this.startTime = event.getStartTime();
+        this.endTime = event.endTime;
+        this.full_location = event.getFull_location();
+        this.city = event.getCity();
+        this.name = event.getName();
+        this.descr = event.getDescription();
+        this.ownerId = event.getOwnerId();
     }
 
     public String getStartTime() {
@@ -38,7 +47,7 @@ public class Event {
     public String getDescription() {
         return descr;
     }
-    public long getOwnerId() {
+    public int getOwnerId() {
         return ownerId;
     }
     public void setStartTime(String time) {
@@ -59,5 +68,5 @@ public class Event {
     public void setDescription(String descr) {
         this.descr = descr;
     }
-    public void setOwnerId(long ownerId) {this.ownerId = ownerId; }
+    public void setOwnerId(int ownerId) {this.ownerId = ownerId; }
 }
