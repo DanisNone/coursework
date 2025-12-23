@@ -1,2 +1,1 @@
-cd server
 mvn clean compile exec:java -D"exec.mainClass"="com.coursework.server.Main"
