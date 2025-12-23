@@ -22,6 +22,13 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:id="@+id/tvCreatorInfo"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
             android:id="@+id/tvEventTime"
             android:layout_marginTop="4dp"
             android:textColor="@color/text_hint"
