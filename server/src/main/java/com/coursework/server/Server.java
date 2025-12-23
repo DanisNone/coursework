@@ -22,6 +22,7 @@ public class Server {
         server.get("/get_events", new GetEventsHandler());
         server.get("/get_user", new GetUserHandler());
         server.post("/add_event", new AddEventHandler());
+        server.post("/auth", new UserAuthentication());
     }
 
     public String getAddress() {
