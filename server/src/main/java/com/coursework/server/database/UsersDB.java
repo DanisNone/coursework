@@ -36,4 +36,22 @@ public class UsersDB {
             }
         }
     }
+    public User getById(Integer id) throws SQLException {
+        String sql = "SELECT id, login, password_hash, name, surname FROM users WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                        rs.getString("login"),
+                        rs.getString("password_hash"),
+                        rs.getString("name"),
+                        rs.getString("surname")
+                    );
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
 }

@@ -11,6 +11,8 @@ import com.coursework.server.database.Event;
 import com.coursework.server.database.EventDeserializer;
 import com.coursework.server.database.EventSerializer;
 import com.coursework.server.database.EventsDB;
+import com.coursework.server.database.User;
+import com.coursework.server.database.UsersDB;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -75,7 +77,6 @@ class GetEventsHandler implements Handler {
 }
 
 class AddEventHandler implements Handler {
-
     @Override
     public void handle(Context ctx) {
         String body = ctx.body();
@@ -101,6 +102,35 @@ class AddEventHandler implements Handler {
             String response = "{\"status\":\"error\",\"message\":\"Invalid request body\"}";
             ctx.status(HttpStatus.BAD_REQUEST);
             ctx.result(response.getBytes(StandardCharsets.UTF_8));
+        }
+    }
+}
+
+class GetUserHandler implements Handler {
+    @Override
+    public void handle(Context ctx) {
+        Map<String, List<String>> params = ctx.queryParamMap();
+        Integer id = null;
+        String id_s = null;
+        List<String> idList = params.get("id");
+        if (idList != null && !idList.isEmpty()) id_s = idList.get(0);
+        if (id_s != null) id = Integer.valueOf(id_s);
+        
+        if (id == null || id <= 0) {
+            ctx.status(HttpStatus.BAD_REQUEST);
+            ctx.result("incorrect id");
+            return;
+        }
+
+        try {
+            UsersDB usersDB = UsersDB.getInstance();
+            User user = usersDB.getById(id);
+            String response = new Gson().toJson(user);
+            ctx.status(HttpStatus.OK);
+            ctx.result(response.getBytes(StandardCharsets.UTF_8));
+        } catch (SQLException e) {
+            ctx.result(e.getMessage());
+            ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

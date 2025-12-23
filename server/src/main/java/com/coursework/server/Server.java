@@ -1,6 +1,7 @@
 package com.coursework.server;
 
 import java.io.IOException;
+
 import io.javalin.Javalin;
 
 
@@ -20,6 +21,7 @@ public class Server {
         server.get("/get_cities", new GetCitiesHadler());
         server.get("/get_events", new GetEventsHandler());
         server.post("/add_event", new AddEventHandler());
+        server.post("/get_user", new AddEventHandler());
     }
 
     public String getAddress() {
