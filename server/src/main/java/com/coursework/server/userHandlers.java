@@ -12,6 +12,7 @@ import com.coursework.server.database.PublicUser;
 import com.coursework.server.database.User;
 import com.coursework.server.database.UsersDB;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
@@ -51,23 +52,6 @@ class GetUserHandler implements Handler {
     }
 }
 
-class AuthenticationInfo {
-    private final String login;
-    private final String password;
-
-    public AuthenticationInfo(String login, String password) {
-        this.login = login;
-        this.password = password;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-    public String getPassword() {
-        return password;
-    }
-}
-
 
 class UserAuthentication implements Handler {
     // TODO: Реализовать секретное хранение
@@ -80,14 +64,19 @@ class UserAuthentication implements Handler {
 
         try {
             Gson gson = new Gson();
-            AuthenticationInfo info = gson.fromJson(body, AuthenticationInfo.class);
-            User user = UsersDB.getInstance().getByLogin(info.getLogin());
+            Map<String, String> info = gson.fromJson(body, new TypeToken<Map<String, String>>(){}.getType());
+            String login = info.get("login");
+            String password = info.get("password");
+            if (login == null || password == null) {
+                ctx.status(HttpStatus.BAD_REQUEST);
+                return;
+            }
+            User user = UsersDB.getInstance().getByLogin(login);
 
-            if (user == null || !user.checkPassword(info.getPassword())) {
+            if (user == null || !user.checkPassword(password)) {
                 ctx.status(HttpStatus.UNAUTHORIZED);
                 return;
             }
-
             String jwt = Jwts.builder()
                     .setSubject(user.getLogin())
                     .setIssuedAt(new Date(System.currentTimeMillis()))
