@@ -27,6 +27,7 @@ import com.example.events.UI.NightModeView;
 import com.example.events.network.ApiClient;
 import com.example.events.viewModel.CitiesViewModel;
 import com.example.events.viewModel.EventsViewModel;
+import com.example.events.viewModel.ProfileViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -154,11 +155,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupProfileButton() {
+        ProfileViewModel profile = new ViewModelProvider(this).get(ProfileViewModel.class);
         btnProfile.setOnClickListener(v -> {
-//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-//            startActivity(intent);
 
-            Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
+            Intent intent;
+            if (profile.isLogged())
+                intent = new Intent(MainActivity.this, ProfileActivity.class);
+            else
+                intent = new Intent(MainActivity.this, AuthenticationActivity.class);
             startActivity(intent);
         });
     }

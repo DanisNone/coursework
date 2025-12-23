@@ -74,17 +74,17 @@ public class AuthenticationActivity extends AppCompatActivity {
             String login = etLogin.getText().toString();
             String password = etPassword.getText().toString();
 
-            String loginError = checkLogin(login);
-            if (loginError != null) {
-                Snackbar.make(v, loginError, Snackbar.LENGTH_SHORT).show();
-                return;
-            }
-
-            String passwordError = checkPassword(password);
-            if (passwordError != null) {
-                Snackbar.make(v, passwordError, Snackbar.LENGTH_SHORT).show();
-                return;
-            }
+//            String loginError = checkLogin(login);
+//            if (loginError != null) {
+//                Snackbar.make(v, loginError, Snackbar.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            String passwordError = checkPassword(password);
+//            if (passwordError != null) {
+//                Snackbar.make(v, passwordError, Snackbar.LENGTH_SHORT).show();
+//                return;
+//            }
             Map<String, String> map = new HashMap<>();
             map.put("login", login);
             map.put("password", password);
