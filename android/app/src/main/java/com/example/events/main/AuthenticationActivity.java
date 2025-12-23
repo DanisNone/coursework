@@ -65,7 +65,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                     new ApiClient.PostCallback() {
                         @Override
                         public void onSuccess(String response) {
-                            profile.setJWToken(response);
+                            profile.setLogin(login);
+                            profile.setPassword(password);
                             setResult(Activity.RESULT_OK);
                             finish();
                         }

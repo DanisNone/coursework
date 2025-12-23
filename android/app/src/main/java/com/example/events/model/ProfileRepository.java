@@ -11,11 +11,13 @@ import androidx.security.crypto.MasterKey;
 public class ProfileRepository {
 
     private static final String PREFS_NAME = "secure_profile";
-    private static final String KEY_JWT = "jwt_token";
+    private static final String KEY_LOGIN = "PROFILE_LOGIN";
+    private static final String KEY_PASSWORD = "PROFILE_PASSWORD";
 
     private static ProfileRepository instance;
 
-    private final MutableLiveData<String> JWToken = new MutableLiveData<>();
+    private String login;
+    private String password;
     private final SharedPreferences securePrefs;
 
     private ProfileRepository(Context context) {
@@ -32,8 +34,8 @@ public class ProfileRepository {
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
 
-            // 🔹 загрузка токена при инициализации
-            JWToken.setValue(securePrefs.getString(KEY_JWT, null));
+            login = securePrefs.getString(KEY_LOGIN, null);
+            password = securePrefs.getString(KEY_PASSWORD, null);
 
         } catch (Exception e) {
             throw new RuntimeException("Secure storage init failed", e);
@@ -47,24 +49,28 @@ public class ProfileRepository {
         return instance;
     }
 
-    public LiveData<String> getJWToken() {
-        return JWToken;
+    public void setLogin(String value) {
+        login = value;
+        securePrefs.edit()
+                .putString(KEY_LOGIN, value)
+                .apply();
     }
 
-    public void setJWToken(String value) {
-        JWToken.postValue(value);
-
+    public void setPassword(String value) {
+        password = value;
         securePrefs.edit()
-                .putString(KEY_JWT, value)
+                .putString(KEY_PASSWORD, value)
                 .apply();
     }
 
     public void logout() {
-        JWToken.postValue(null);
-        securePrefs.edit().remove(KEY_JWT).apply();
+        login = null;
+        password = null;
+        securePrefs.edit().remove(KEY_PASSWORD).apply();
+        securePrefs.edit().remove(KEY_LOGIN).apply();
     }
 
     public boolean isLogged() {
-        return JWToken.getValue() != null;
+        return login != null && password != null;
     }
 }
