@@ -17,6 +17,7 @@ public class EventSerializer implements JsonSerializer<Event> {
         jsonObj.add("city", context.serialize(value.city));
         jsonObj.add("name", context.serialize(value.name));
         jsonObj.add("descr", context.serialize(value.descr));
+        jsonObj.add("ownerId", context.serialize(value.ownerId));
 
         return jsonObj;
     }

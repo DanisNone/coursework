@@ -1,7 +1,6 @@
 package com.coursework.server.database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,42 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class EventsBD {
-    static private EventsBD instance;
-
-    private Connection conn;
-    private EventsBD() throws SQLException {
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new SQLException("SQLite JDBC Driver not found");
-        }
-        String url = "jdbc:sqlite:database.db";
-        conn = DriverManager.getConnection(url);
-        createTableIfNotExists();
+public class EventsDB {
+    static private EventsDB instance;
+    private final Connection conn;
+    
+    private EventsDB() throws SQLException {
+        conn = Database.getInstance().getConnection();
     }
 
-    static public EventsBD get_instance() throws SQLException {
+    static public EventsDB getInstance() throws SQLException {
         if (instance == null)
-            instance = new EventsBD();
+            instance = new EventsDB();
         return instance;
     }
 
-    private void createTableIfNotExists() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS events (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "start_time DATETIME NOT NULL," +
-                "end_time DATETIME NOT NULL," +
-                "full_location TEXT NOT NULL," +
-                "city TEXT NOT NULL," +
-                "name TEXT NOT NULL," +
-                "descr TEXT NOT NULL)";
-        conn.createStatement().execute(sql);
-    }
-
     public void insertEvent(Event event) throws SQLException {
-        String sql = "INSERT INTO events (start_time, end_time, full_location, city, name, descr) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO events (start_time, end_time, full_location, city, name, descr, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setTimestamp(1, Timestamp.valueOf(event.startTime));
             pstmt.setTimestamp(2, Timestamp.valueOf(event.endTime));
@@ -54,6 +33,7 @@ public class EventsBD {
             pstmt.setString(4, event.city);
             pstmt.setString(5, event.name);
             pstmt.setString(6, event.descr);
+            pstmt.setLong(7, event.ownerId);
             pstmt.executeUpdate();
         }
     }
@@ -78,7 +58,8 @@ public class EventsBD {
             String event_city = rs.getString("city");
             String name = rs.getString("name");
             String descr = rs.getString("descr");
-            Event event = new Event(startTime, endTime, full_location, event_city, name, descr);
+            long ownerId = rs.getLong("owner_id");
+            Event event = new Event(startTime, endTime, full_location, event_city, name, descr, ownerId);
             events.add(event);
         }
         return events;

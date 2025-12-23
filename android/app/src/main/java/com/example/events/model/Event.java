@@ -8,14 +8,16 @@ public class Event {
     private String city;
     private String name;
     private String descr;
+    private long ownerId;
 
-    public Event(String startTime, String endTime, String full_location, String city, String name, String descr){
+    public Event(String startTime, String endTime, String full_location, String city, String name, String descr, long ownerId){
         this.startTime = startTime;
         this.endTime = endTime;
         this.full_location = full_location;
         this.city = city;
         this.name = name;
         this.descr = descr;
+        this.ownerId = ownerId;
     }
 
     public String getStartTime() {
@@ -36,6 +38,9 @@ public class Event {
     public String getDescription() {
         return descr;
     }
+    public long getOwnerId() {
+        return ownerId;
+    }
     public void setStartTime(String time) {
         this.startTime = time;
     }
@@ -54,4 +59,5 @@ public class Event {
     public void setDescription(String descr) {
         this.descr = descr;
     }
+    public void setOwnerId(long ownerId) {this.ownerId = ownerId; }
 }

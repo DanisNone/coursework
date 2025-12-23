@@ -152,7 +152,7 @@ public class AddEventActivity extends AppCompatActivity {
         Event newEvent = new Event (
                 startTime, endTime,
                 location, city,
-                name, description
+                name, description, 1
         );
 
         Gson gson = new Gson();
