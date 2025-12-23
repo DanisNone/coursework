@@ -25,11 +25,13 @@ public class EventDetailActivity extends AppCompatActivity {
         });
 
         TextView tvName = findViewById(R.id.tvEventName);
+        TextView tvOwnerInfo = findViewById(R.id.tvCreatorInfo);
         TextView tvTime = findViewById(R.id.tvEventTime);
         TextView tvLocation = findViewById(R.id.tvEventLocation);
         TextView tvEventDescription = findViewById(R.id.tvEventDescr);
 
         tvName.setText(getIntent().getStringExtra("name"));
+        tvOwnerInfo.setText(getIntent().getStringExtra("ownerInfo"));
         tvTime.setText(getIntent().getStringExtra("time"));
         tvLocation.setText(getIntent().getStringExtra("location"));
         tvEventDescription.setText(getIntent().getStringExtra("description"));
