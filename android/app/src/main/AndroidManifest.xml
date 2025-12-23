@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".main.EventDetailActivity" />
         <activity android:name=".main.ProfileActivity" />
+        <activity android:name=".main.AuthenticationActivity" />
 
         <activity
             android:name=".main.AddEventActivity"
