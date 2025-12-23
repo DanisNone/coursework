@@ -20,8 +20,8 @@ public class Server {
         server.start(hostname, port);
         server.get("/get_cities", new GetCitiesHadler());
         server.get("/get_events", new GetEventsHandler());
+        server.get("/get_user", new AddEventHandler());
         server.post("/add_event", new AddEventHandler());
-        server.post("/get_user", new AddEventHandler());
     }
 
     public String getAddress() {
