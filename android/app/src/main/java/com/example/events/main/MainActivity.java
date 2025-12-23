@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         rvEvents.setLayoutManager(new LinearLayoutManager(this));
         EventsViewModel eventsView = new ViewModelProvider(this).get(EventsViewModel.class);
-        eventsView.getEvents().observe(this, events -> rvEvents.setAdapter(new EventAdapter(events)));
+        eventsView.getPubEvents().observe(this,  publicEvents -> rvEvents.setAdapter(new PubEventAdapter(publicEvents)));
     }
 
     private void setSpinnerData(List<String> cities) {
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         ApiClient.getEventsAsync(city, start, end, new ApiClient.EventsCallback() {
             @Override
             public void onSuccess(List<Event> events) {
-                eventsView.setEvents(events);
+                eventsView.setPublicEvents(events);
             }
 
             @Override
