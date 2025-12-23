@@ -1,5 +1,6 @@
 package com.example.events.main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
@@ -27,7 +30,7 @@ import com.example.events.UI.NightModeView;
 import com.example.events.network.ApiClient;
 import com.example.events.viewModel.CitiesViewModel;
 import com.example.events.viewModel.EventsViewModel;
-import com.example.events.viewModel.ProfileViewModel;
+import com.example.events.model.ProfileRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -56,7 +59,16 @@ public class MainActivity extends AppCompatActivity {
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-
+    private ActivityResultLauncher<Intent> authLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,15 +167,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupProfileButton() {
-        ProfileViewModel profile = new ViewModelProvider(this).get(ProfileViewModel.class);
         btnProfile.setOnClickListener(v -> {
-
-            Intent intent;
-            if (profile.isLogged())
-                intent = new Intent(MainActivity.this, ProfileActivity.class);
-            else
-                intent = new Intent(MainActivity.this, AuthenticationActivity.class);
-            startActivity(intent);
+            ProfileRepository profile = ProfileRepository.getInstance(getApplication());
+            if (profile.isLogged()) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
+                authLauncher.launch(intent);
+            }
         });
     }
 

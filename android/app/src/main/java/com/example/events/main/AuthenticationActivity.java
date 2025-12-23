@@ -1,5 +1,6 @@
 package com.example.events.main;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,10 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.events.R;
 import com.example.events.network.ApiClient;
 import com.example.events.network.ApiConfig;
+import com.example.events.model.ProfileRepository;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
@@ -46,45 +49,12 @@ public class AuthenticationActivity extends AppCompatActivity {
         setupLoginButton();
         setupRegisterButton();
     }
-
-    private String checkLogin(String login) {
-        if (login.length() <= 3)
-            return "Логин слишком короткий";
-        if (64 <= login.length())
-            return "Логин слишком Длинный";
-        if (!login.matches("^[a-zA-Z0-9._]$")) {
-            return "Логин содержит недопустимые символы";
-        }
-        return null;
-    }
-
-    private String checkPassword(String password) {
-        if (password.length() < 8)
-            return "Пароль должен быть не короче 8 символов";
-        if (!password.matches("^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};:'\",./?\\\\|<>]+$"))
-            return "Пароль содержит недопустимые символы";
-        if (password.matches("^[a-zA-Z0-9]"))
-            return "Пароль должен содержать спецсимволы";
-        if (password.equals(password.toLowerCase()) || password.equals(password.toUpperCase()))
-            return "Пароль должен содержать буквы различного регистра";
-        return null;
-    }
     private void setupLoginButton() {
         btnLogin.setOnClickListener(v -> {
             String login = etLogin.getText().toString();
             String password = etPassword.getText().toString();
 
-//            String loginError = checkLogin(login);
-//            if (loginError != null) {
-//                Snackbar.make(v, loginError, Snackbar.LENGTH_SHORT).show();
-//                return;
-//            }
-//
-//            String passwordError = checkPassword(password);
-//            if (passwordError != null) {
-//                Snackbar.make(v, passwordError, Snackbar.LENGTH_SHORT).show();
-//                return;
-//            }
+            ProfileRepository profile = ProfileRepository.getInstance(getApplication());
             Map<String, String> map = new HashMap<>();
             map.put("login", login);
             map.put("password", password);
@@ -95,7 +65,9 @@ public class AuthenticationActivity extends AppCompatActivity {
                     new ApiClient.PostCallback() {
                         @Override
                         public void onSuccess(String response) {
-
+                            profile.setJWToken(response);
+                            setResult(Activity.RESULT_OK);
+                            finish();
                         }
 
                         @Override
