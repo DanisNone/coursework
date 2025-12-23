@@ -11,6 +11,7 @@ import com.coursework.server.database.Event;
 import com.coursework.server.database.EventDeserializer;
 import com.coursework.server.database.EventSerializer;
 import com.coursework.server.database.EventsDB;
+import com.coursework.server.database.PublicUser;
 import com.coursework.server.database.User;
 import com.coursework.server.database.UsersDB;
 import com.google.gson.Gson;
@@ -125,7 +126,9 @@ class GetUserHandler implements Handler {
         try {
             UsersDB usersDB = UsersDB.getInstance();
             User user = usersDB.getById(id);
-            String response = new Gson().toJson(user);
+            PublicUser publicUser = null;
+            if (user != null) publicUser = new PublicUser(user);
+            String response = new Gson().toJson(publicUser);
             ctx.status(HttpStatus.OK);
             ctx.result(response.getBytes(StandardCharsets.UTF_8));
         } catch (SQLException e) {
