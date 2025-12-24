@@ -20,6 +20,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ProfileRepository profile = ProfileRepository.getInstance(getApplication());
+        if (!profile.isLogged()) {
+            Intent intent = new Intent(ProfileActivity.this, AuthenticationActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_profile_root), (v, insets) -> {
@@ -46,7 +53,6 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddEventActivity.class);
             startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
             Toast.makeText(this, "Cannot open event creation", Toast.LENGTH_SHORT).show();
         }
     }

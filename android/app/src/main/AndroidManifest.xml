@@ -27,6 +27,8 @@
         <activity android:name=".main.ProfileActivity" />
         <activity android:name=".main.AuthenticationActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".main.RegistrationActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".main.AddEventActivity"

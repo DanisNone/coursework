@@ -59,17 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private ActivityResultLauncher<Intent> authLauncher =
-            registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                            startActivity(intent);
-                        }
-                    }
-            );
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         NightModeView nightMode = new ViewModelProvider(this).get(NightModeView.class);
@@ -168,15 +157,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupProfileButton() {
         btnProfile.setOnClickListener(v -> {
-            ProfileRepository profile = ProfileRepository.getInstance(getApplication());
-            if (profile.isLogged()) {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-            else {
-                Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
-                authLauncher.launch(intent);
-            }
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
         });
     }
 

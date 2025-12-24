@@ -1,11 +1,14 @@
 package com.example.events.main;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -28,8 +31,15 @@ public class AuthenticationActivity extends AppCompatActivity {
     private EditText etLogin;
     private EditText etPassword;
     private Button btnLogin;
-    private Button btnRegister;
-
+    private Button btnToRegister;
+    private final ActivityResultLauncher<Intent> registrationLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    finish();
+                }
+            }
+    );
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +53,10 @@ public class AuthenticationActivity extends AppCompatActivity {
         etLogin = findViewById(R.id.etLogin);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        btnRegister = findViewById(R.id.btnRegister);
+        btnToRegister = findViewById(R.id.btnToRegister);
 
         setupLoginButton();
-        setupRegisterButton();
+        setupToRegisterButton();
     }
     private void setupLoginButton() {
         btnLogin.setOnClickListener(v -> {
@@ -66,7 +76,8 @@ public class AuthenticationActivity extends AppCompatActivity {
                         public void onSuccess(String response) {
                             profile.setLogin(login);
                             profile.setPassword(password);
-                            setResult(Activity.RESULT_OK);
+                            Intent intent = new Intent(AuthenticationActivity.this, ProfileActivity.class);
+                            startActivity(intent);
                             finish();
                         }
 
@@ -79,9 +90,10 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         });
     }
-    private void setupRegisterButton() {
-        btnRegister.setOnClickListener(v -> {
-            // TODO: Добавить логику регистрации
+    private void setupToRegisterButton() {
+        btnToRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(AuthenticationActivity.this, RegistrationActivity.class);
+            registrationLauncher.launch(intent);
         });
     }
 }
