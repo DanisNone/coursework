@@ -80,6 +80,19 @@ public class ApiClient {
         });
     }
 
+    public static void getUserAsync(String UserLogin, UserCallback callback) {
+        executor.execute(() -> {
+            try {
+                String url = ApiConfig.buildUserGetUrl(UserLogin);
+                String json = httpGet(url);
+                PublicUser user = parsePublicUsers(json);
+                callback.onSuccess(user);
+            } catch (Exception e) {
+                callback.onError(e);
+            }
+        });
+    }
+
     public static void postJsonAsync(String urlStr, String jsonData, PostCallback callback) {
         Log.e("JSON", jsonData);
         executor.execute(() -> {

@@ -63,6 +63,9 @@ public class ProfileRepository {
                 .apply();
     }
 
+    public String getLogin() {
+        return login;
+    }
     public void logout() {
         login = null;
         password = null;
