@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,6 @@ import com.coursework.server.database.EventDeserializer;
 import com.coursework.server.database.EventSerializer;
 import com.coursework.server.database.EventsDB;
 import com.coursework.server.database.PublicUser;
-import com.coursework.server.database.User;
 import com.coursework.server.database.UsersDB;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,6 +40,15 @@ class GetCitiesHadler implements Handler {
     }
 }
 
+class Pair<X, Y> { 
+    public final X first; 
+    public final Y second; 
+    public Pair(X first, Y second) { 
+        this.first = first;
+        this.second = second; 
+    } 
+} 
+
 class GetEventsHandler implements Handler {
     @Override
     public void handle(Context ctx) {
@@ -65,11 +74,17 @@ class GetEventsHandler implements Handler {
 
         try {
             EventsDB eventsDB = EventsDB.getInstance();
+            UsersDB usersDB = UsersDB.getInstance();
             List<Event> events = eventsDB.getEvents(start, end, city);
-            Gson gson = new GsonBuilder().registerTypeAdapter(Event.class, new EventSerializer()).create();
-            String response = gson.toJson(events);
+            List<Pair<Event, PublicUser>> response = new ArrayList<>();
+            for (Event event: events) {
+                PublicUser user = new PublicUser(usersDB.getById(event.ownerId));
+                response.add(new Pair(event, user));
+            }
+            Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Event.class, new EventSerializer()).create();
+            String response_s = gson.toJson(response);
             ctx.status(HttpStatus.OK);
-            ctx.result(response.getBytes(StandardCharsets.UTF_8));
+            ctx.result(response_s.getBytes(StandardCharsets.UTF_8));
         } catch (SQLException e) {
             ctx.result(e.getMessage());
             ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -103,37 +118,6 @@ class AddEventHandler implements Handler {
             String response = "{\"status\":\"error\",\"message\":\"Invalid request body\"}";
             ctx.status(HttpStatus.BAD_REQUEST);
             ctx.result(response.getBytes(StandardCharsets.UTF_8));
-        }
-    }
-}
-
-class GetUserHandler implements Handler {
-    @Override
-    public void handle(Context ctx) {
-        Map<String, List<String>> params = ctx.queryParamMap();
-        Integer id = null;
-        String id_s = null;
-        List<String> idList = params.get("id");
-        if (idList != null && !idList.isEmpty()) id_s = idList.get(0);
-        if (id_s != null) id = Integer.valueOf(id_s);
-        
-        if (id == null || id <= 0) {
-            ctx.status(HttpStatus.BAD_REQUEST);
-            ctx.result("incorrect id");
-            return;
-        }
-
-        try {
-            UsersDB usersDB = UsersDB.getInstance();
-            User user = usersDB.getById(id);
-            PublicUser publicUser = null;
-            if (user != null) publicUser = new PublicUser(user);
-            String response = new Gson().toJson(publicUser);
-            ctx.status(HttpStatus.OK);
-            ctx.result(response.getBytes(StandardCharsets.UTF_8));
-        } catch (SQLException e) {
-            ctx.result(e.getMessage());
-            ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
