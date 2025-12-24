@@ -3,6 +3,7 @@ package com.example.events.network;
 import android.util.Log;
 
 import com.example.events.model.Event;
+import com.example.events.model.PublicEvent;
 import com.example.events.model.PublicUser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,6 +15,7 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,8 +30,14 @@ public class ApiClient {
     }
 
     // Интерфейс для получения событий
+//    public interface EventsCallback {
+//        void onSuccess(List<Event> events);
+//        void onError(Exception e);
+//    }
+
+
     public interface EventsCallback {
-        void onSuccess(List<Event> events);
+        void onSuccess(List<PublicEvent> events);
         void onError(Exception e);
     }
 
@@ -51,7 +59,7 @@ public class ApiClient {
             try {
                 String url = ApiConfig.buildEventsGetUrl(city, start, end);
                 String json = httpGet(url);
-                List<Event> events = parseEvents(json);
+                List<PublicEvent> events = parsePublicEvents(json);
                 callback.onSuccess(events);
             } catch (Exception e) {
                 callback.onError(e);
@@ -181,6 +189,26 @@ public class ApiClient {
     }
 
     private static PublicUser parsePublicUsers(String json) {
-        return gson.fromJson(json, new TypeToken<PublicUser>(){}.getType());
+        return gson.fromJson(json, PublicUser.class);
+    }
+    private static List<PublicEvent> parsePublicEvents(String json) {
+        List<PublicEvent> resEvents = new ArrayList<>();
+        List<Pair<Event, PublicUser>> pairedData = gson.fromJson(json, new TypeToken<List<Pair<Event, PublicUser>>>(){}.getType());
+        for (Pair<Event, PublicUser> pair : pairedData) {
+            Event event = pair.first;
+            PublicUser publicUser = pair.second;
+            resEvents.add(new PublicEvent(event, publicUser));
+        }
+        return resEvents;
     }
 }   
+
+
+class Pair<X, Y> { 
+    public final X first;
+    public final Y second;
+    public Pair(X first, Y second) {
+        this.first = first;
+        this.second = second; 
+    } 
+}
