@@ -30,7 +30,6 @@ class GetUserHandler implements Handler {
         List<String> idList = params.get("id");
         if (idList != null && !idList.isEmpty()) id_s = idList.get(0);
         if (id_s != null) id = Integer.valueOf(id_s);
-        
         if (id == null || id <= 0) {
             ctx.status(HttpStatus.BAD_REQUEST);
             ctx.result("incorrect id");
@@ -39,7 +38,7 @@ class GetUserHandler implements Handler {
 
         try {
             UsersDB usersDB = UsersDB.getInstance();
-            User user = usersDB.getById(id);
+            User user = usersDB.getById(id.longValue());
             PublicUser publicUser = null;
             if (user != null) publicUser = new PublicUser(user);
             String response = new Gson().toJson(publicUser);
