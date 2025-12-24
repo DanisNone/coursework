@@ -24,6 +24,7 @@ import com.example.events.R;
 import com.example.events.UI.DateTimePickerHelper;
 import com.example.events.model.Event;
 import com.example.events.UI.NightModeView;
+import com.example.events.model.PublicEvent;
 import com.example.events.network.ApiClient;
 import com.example.events.viewModel.CitiesViewModel;
 import com.example.events.viewModel.EventsViewModel;
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         EventsViewModel eventsView = new ViewModelProvider(this).get(EventsViewModel.class);
         ApiClient.getEventsAsync(city, start, end, new ApiClient.EventsCallback() {
             @Override
-            public void onSuccess(List<Event> events) {
+            public void onSuccess(List<PublicEvent> events) {
                 eventsView.setPublicEvents(events);
             }
 
