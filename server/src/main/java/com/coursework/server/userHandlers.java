@@ -25,11 +25,11 @@ class GetUserHandler implements Handler {
     @Override
     public void handle(Context ctx) {
         Map<String, List<String>> params = ctx.queryParamMap();
-        Integer id = null;
+        Long id = null;
         String id_s = null;
         List<String> idList = params.get("id");
         if (idList != null && !idList.isEmpty()) id_s = idList.get(0);
-        if (id_s != null) id = Integer.valueOf(id_s);
+        if (id_s != null) id = Long.parseLong(id_s);
         if (id == null || id <= 0) {
             ctx.status(HttpStatus.BAD_REQUEST);
             ctx.result("incorrect id");
@@ -38,13 +38,14 @@ class GetUserHandler implements Handler {
 
         try {
             UsersDB usersDB = UsersDB.getInstance();
-            User user = usersDB.getById(id.longValue());
+            User user = usersDB.getById(id);
             PublicUser publicUser = null;
             if (user != null) publicUser = new PublicUser(user);
             String response = new Gson().toJson(publicUser);
             ctx.status(HttpStatus.OK);
             ctx.result(response.getBytes(StandardCharsets.UTF_8));
         } catch (SQLException e) {
+            e.printStackTrace();
             ctx.result(e.getMessage());
             ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
