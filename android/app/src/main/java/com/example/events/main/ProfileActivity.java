@@ -20,6 +20,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ProfileRepository profile = ProfileRepository.getInstance(getApplication());
+        if (!profile.isLogged()) {
+            Intent intent = new Intent(ProfileActivity.this, AuthenticationActivity.class);
+            startActivity(intent);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_profile_root), (v, insets) -> {
@@ -46,12 +51,11 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddEventActivity.class);
             startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
             Toast.makeText(this, "Cannot open event creation", Toast.LENGTH_SHORT).show();
         }
     }
     private void setupBtnLogout() {
-        btnLogout.setOnClickListener(v->{
+        btnLogout.setOnClickListener(v->
             new AlertDialog.Builder(this)
                     .setTitle("Подтверждение")
                     .setMessage("Вы действительно хотите выйти?")
@@ -63,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
                     .setNegativeButton("Нет", (dialog, which) -> {
                         dialog.dismiss(); // Закрываем диалог
                     })
-                    .show();
-        });
+                    .show()
+        );
     }
 }
