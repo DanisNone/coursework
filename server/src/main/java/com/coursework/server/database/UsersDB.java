@@ -36,7 +36,7 @@ public class UsersDB {
             }
         }
     }
-    public User getById(Integer id) throws SQLException {
+    public User getById(long id) throws SQLException {
         String sql = "SELECT id, login, password_hash, name, surname FROM users WHERE id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, id);
