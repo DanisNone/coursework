@@ -25,4 +25,10 @@ public class ApiConfig {
         builder.appendQueryParameter("id", String.valueOf(id));
         return builder.build().toString();
     }
+    static String buildUserGetUrl(String login) {
+        Uri.Builder builder = Uri.parse(BASE_URL + "get_user/").buildUpon();
+
+        builder.appendQueryParameter("login", login);
+        return builder.build().toString();
+    }
 }

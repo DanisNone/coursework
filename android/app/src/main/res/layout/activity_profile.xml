@@ -44,6 +44,32 @@
 
     </LinearLayout>
 
+    <!-- TextView для имени -->
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/title_text"
+        android:layout_marginTop="8dp"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- TextView для фамилии -->
+    <TextView
+        android:id="@+id/tvSurname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/title_text"
+        android:layout_marginTop="8dp"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Текст списка мероприятий -->
     <TextView
         android:id="@+id/tvEventsTitle"
@@ -53,7 +79,7 @@
         android:textSize="24sp"
         android:textColor="@color/events_text"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintTop_toBottomOf="@id/tvSurname"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
