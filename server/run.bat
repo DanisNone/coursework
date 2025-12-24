@@ -1,1 +1,1 @@
-mvn clean compile exec:java -D"exec.mainClass"="com.coursework.server.Main"
+mvn clean compile exec:java -D"exec.mainClass"="com.coursework.server.Main" -D"exec.args"="193.108.113.136 8080"

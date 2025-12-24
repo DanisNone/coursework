@@ -53,11 +53,14 @@ class GetUserHandler implements Handler {
 }
 
 
-class UserAuthentication implements Handler {
+class JWTInfo {
     // TODO: Реализовать секретное хранение
-    private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private static final long EXPIRATION_MS = 15 * 60 * 1000; // 15 минут
+    public static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    public static final long EXPIRATION_MS = 15 * 60 * 1000; // 15 минут
+};
 
+
+class UserAuthentication implements Handler {
     @Override
     public void handle(Context ctx) {
         String body = ctx.body();
@@ -80,8 +83,50 @@ class UserAuthentication implements Handler {
             String jwt = Jwts.builder()
                     .setSubject(user.getLogin())
                     .setIssuedAt(new Date(System.currentTimeMillis()))
-                    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
-                    .signWith(SECRET_KEY)
+                    .setExpiration(new Date(System.currentTimeMillis() + JWTInfo.EXPIRATION_MS))
+                    .signWith(JWTInfo.SECRET_KEY)
+                    .compact();
+
+            ctx.status(HttpStatus.OK);
+            ctx.result(jwt);
+        } catch (SQLException e) {
+            ctx.result(e.getMessage());
+            ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
+
+class UserRegistration implements Handler {
+    @Override
+    public void handle(Context ctx) {
+        String body = ctx.body();
+
+        try {
+            UsersDB userDB = UsersDB.getInstance();
+            Gson gson = new Gson();
+            Map<String, String> info = gson.fromJson(body, new TypeToken<Map<String, String>>(){}.getType());
+            String login = info.get("login");
+            String password = info.get("password");
+            String name = info.get("name");
+            String surname = info.get("surname");
+            if (login == null || password == null || name == null || surname == null) {
+                ctx.status(HttpStatus.BAD_REQUEST);
+                return;
+            }
+            User user = userDB.getByLogin(login);
+            if (user != null) {
+                ctx.status(HttpStatus.CONFLICT);
+                ctx.result("login already exists");
+                return;
+            }
+            user = User.fromPassword(login, password, name, surname);
+            userDB.insertUser(user);
+
+            String jwt = Jwts.builder()
+                    .setSubject(user.getLogin())
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + JWTInfo.EXPIRATION_MS))
+                    .signWith(JWTInfo.SECRET_KEY)
                     .compact();
 
             ctx.status(HttpStatus.OK);
