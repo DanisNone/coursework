@@ -34,19 +34,24 @@ public class PubEventAdapter extends RecyclerView.Adapter<PubEventAdapter.EventV
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         PublicEvent event = pubEventList.get(position);
+        String name = event.getName();
+        String ownerInfo = event.getPublicUser().getName() + " " + event.getPublicUser().getSurname();
+        String timeStr = event.getStartTime() + " - " + event.getEndTime();
+        String location = event.getFull_location() + ", " + event.getCity();
+        String description = event.getDescription();
 
-        holder.tvName.setText(event.getName());
-        holder.tvOwnerInfo.setText(event.getOwnerName() + " " + event.getOwnerSurname());
-        holder.tvTime.setText(event.getStartTime() + " - " + event.getEndTime());
-        holder.tvLocation.setText(event.getFull_location() + ", " + event.getCity());
+        holder.tvName.setText(name);
+        holder.tvOwnerInfo.setText(ownerInfo);
+        holder.tvTime.setText(timeStr);
+        holder.tvLocation.setText(location);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EventDetailActivity.class);
-            intent.putExtra("name", event.getName());
-            intent.putExtra("ownerInfo", event.getOwnerName() + " " + event.getOwnerSurname());
-            intent.putExtra("time", event.getStartTime() + " - " + event.getEndTime());
-            intent.putExtra("location", event.getFull_location());
-            intent.putExtra("description", event.getDescription());
+            intent.putExtra("name", name);
+            intent.putExtra("ownerInfo", ownerInfo);
+            intent.putExtra("time", timeStr);
+            intent.putExtra("location", location);
+            intent.putExtra("description", description);
             v.getContext().startActivity(intent);
         });
     }
