@@ -8,22 +8,27 @@ public class PublicEvent {
     private String city;
     private String name;
     private String descr;
-    private String ownerName;
-    private String ownerSurname;
+    private PublicUser publicUser;
 
-    public PublicEvent(String startTime, String endTime,
-                       String full_location, String city,
-                       String name, String descr,
-                       String ownerName, String ownerSurname)
-    {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.full_location = full_location;
-        this.city = city;
-        this.name = name;
-        this.descr = descr;
-        this.ownerName = ownerName;
-        this.ownerSurname = ownerSurname;
+
+    public PublicEvent() {
+        this.startTime = "";
+        this.endTime = "";
+        this.full_location = "";
+        this.city = "";
+        this.name = "";
+        this.descr = "";
+        this.publicUser = new PublicUser();
+    }
+
+    public PublicEvent(PublicEvent publicEvent) {
+        this.startTime = publicEvent.getStartTime();
+        this.endTime = publicEvent.getEndTime();
+        this.full_location = publicEvent.getFull_location();
+        this.city = publicEvent.getCity();
+        this.name = publicEvent.getName();
+        this.descr = publicEvent.getDescription();
+        this.publicUser = publicEvent.getPublicUser();
     }
 
     public PublicEvent(Event event, PublicUser user) {
@@ -33,19 +38,7 @@ public class PublicEvent {
         this.city = event.getCity();
         this.name = event.getName();
         this.descr = event.getDescription();
-        this.ownerName = user.getName();
-        this.ownerSurname = user.getSurname();
-    }
-
-    public PublicEvent() {
-        this.startTime = "";
-        this.endTime = "";
-        this.full_location = "";
-        this.city = "";
-        this.name = "";
-        this.descr = "";
-        this.ownerName = "";
-        this.ownerSurname = "";
+        this.publicUser = user;
     }
 
     public String getStartTime() {
@@ -68,16 +61,20 @@ public class PublicEvent {
     }
 
     public String getOwnerName() {
-        return ownerName;
+        return publicUser.getName();
     }
 
     public String getOwnerSurname() {
-        return ownerSurname;
+        return publicUser.getSurname();
+    }
+    public PublicUser getPublicUser() {
+        return publicUser;
     }
 
     public void setStartTime(String time) {
         this.startTime = time;
     }
+
     public void setEndTime(String time) {
         this.endTime = time;
     }
@@ -93,10 +90,13 @@ public class PublicEvent {
     public void setDescription(String descr) {
         this.descr = descr;
     }
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-    public void setOwnerSurname(String ownerSurname) {
-        this.ownerSurname = ownerSurname;
+//    public void setOwnerName(String ownerName) {
+//        publicUser.setName(ownerName);
+//    }
+//    public void setOwnerSurname(String ownerSurname) {
+//        publicUser.setSurname(ownerSurname);
+//    }
+    public void setPublicUser(PublicUser publicUser) {
+        this.publicUser = publicUser;
     }
 }

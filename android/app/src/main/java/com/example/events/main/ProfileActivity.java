@@ -80,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
     private void setupBtnLogout() {
-        btnLogout.setOnClickListener(v->{
+        btnLogout.setOnClickListener(v->
             new AlertDialog.Builder(this)
                     .setTitle("Подтверждение")
                     .setMessage("Вы действительно хотите выйти?")
@@ -92,7 +92,7 @@ public class ProfileActivity extends AppCompatActivity {
                     .setNegativeButton("Нет", (dialog, which) -> {
                         dialog.dismiss(); // Закрываем диалог
                     })
-                    .show();
-        });
+                    .show()
+        );
     }
 }

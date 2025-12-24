@@ -1,6 +1,5 @@
 package com.example.events.main;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,8 +11,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
@@ -25,12 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.events.R;
 import com.example.events.UI.DateTimePickerHelper;
-import com.example.events.model.Event;
 import com.example.events.UI.NightModeView;
+import com.example.events.model.PublicEvent;
 import com.example.events.network.ApiClient;
 import com.example.events.viewModel.CitiesViewModel;
 import com.example.events.viewModel.EventsViewModel;
-import com.example.events.model.ProfileRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -39,9 +35,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "EventsApp";
-
     private Spinner spinnerCity;
 
     private EditText etStartDate, etEndDate;
@@ -180,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         EventsViewModel eventsView = new ViewModelProvider(this).get(EventsViewModel.class);
         ApiClient.getEventsAsync(city, start, end, new ApiClient.EventsCallback() {
             @Override
-            public void onSuccess(List<Event> events) {
+            public void onSuccess(List<PublicEvent> events) {
                 eventsView.setPublicEvents(events);
             }
 
