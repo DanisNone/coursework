@@ -26,29 +26,53 @@ class GetUserHandler implements Handler {
     public void handle(Context ctx) {
         Map<String, List<String>> params = ctx.queryParamMap();
         Long id = null;
-        String id_s = null;
+        String login = null;
         List<String> idList = params.get("id");
-        if (idList != null && !idList.isEmpty()) id_s = idList.get(0);
-        if (id_s != null) id = Long.parseLong(id_s);
-        if (id == null || id <= 0) {
+        List<String> logins = params.get("login");
+        if (idList != null && !idList.isEmpty() && idList.get(0) != null)
+            id = Long.valueOf(idList.get(0));
+        if (logins != null && !logins.isEmpty() && logins.get(0) != null)
+            login = logins.get(0);
+        // if id != null login ignored
+        
+        if (id != null && id <= 0) {
             ctx.status(HttpStatus.BAD_REQUEST);
             ctx.result("incorrect id");
             return;
         }
+        if (id == null && login == null) {
+            ctx.status(HttpStatus.BAD_REQUEST);
+            return;
+        }
 
         try {
-            UsersDB usersDB = UsersDB.getInstance();
-            User user = usersDB.getById(id);
-            PublicUser publicUser = null;
-            if (user != null) publicUser = new PublicUser(user);
-            String response = new Gson().toJson(publicUser);
+            String result;
+            if (id == null)
+                result = getByLogin(login);
+            else
+                result = getById(id);
             ctx.status(HttpStatus.OK);
-            ctx.result(response.getBytes(StandardCharsets.UTF_8));
+            ctx.result(result.getBytes(StandardCharsets.UTF_8));
         } catch (SQLException e) {
-            e.printStackTrace();
             ctx.result(e.getMessage());
             ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private String getByLogin(String login) throws SQLException {
+        UsersDB usersDB = UsersDB.getInstance();
+        User user = usersDB.getByLogin(login);
+        PublicUser publicUser = null;
+        if (user != null) publicUser = new PublicUser(user);
+        return new Gson().toJson(publicUser);
+    }
+
+    private String getById(Long id) throws SQLException {
+        UsersDB usersDB = UsersDB.getInstance();
+        User user = usersDB.getById(id);
+        PublicUser publicUser = null;
+        if (user != null) publicUser = new PublicUser(user);
+        return new Gson().toJson(publicUser);
     }
 }
 
