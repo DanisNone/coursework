@@ -3,6 +3,7 @@ package com.example.events.network;
 import android.util.Log;
 
 import com.example.events.model.Event;
+import com.example.events.model.PublicUser;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,6 +21,11 @@ import java.util.concurrent.Executors;
 public class ApiClient {
     private static final Gson gson = new Gson();
     private static final ExecutorService executor = Executors.newFixedThreadPool(4);
+
+    public interface UserCallback {
+        void onSuccess(PublicUser user);
+        void onError(Exception e);
+    }
 
     // Интерфейс для получения событий
     public interface EventsCallback {
@@ -47,6 +53,19 @@ public class ApiClient {
                 String json = httpGet(url);
                 List<Event> events = parseEvents(json);
                 callback.onSuccess(events);
+            } catch (Exception e) {
+                callback.onError(e);
+            }
+        });
+    }
+
+    public static void getUserAsync(int userID, UserCallback callback) {
+        executor.execute(() -> {
+            try {
+                String url = ApiConfig.buildUserGetUrl(userID);
+                String json = httpGet(url);
+                PublicUser user = parsePublicUsers(json);
+                callback.onSuccess(user);
             } catch (Exception e) {
                 callback.onError(e);
             }
@@ -159,5 +178,9 @@ public class ApiClient {
 
     private static List<Event> parseEvents(String json) {
         return gson.fromJson(json, new TypeToken<List<Event>>(){}.getType());
+    }
+
+    private static PublicUser parsePublicUsers(String json) {
+        return gson.fromJson(json, new TypeToken<PublicUser>(){}.getType());
     }
 }   

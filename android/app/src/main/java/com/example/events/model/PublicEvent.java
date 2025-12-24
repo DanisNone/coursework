@@ -1,32 +1,51 @@
 package com.example.events.model;
 
 
-public class Event {
+public class PublicEvent {
     private String startTime;
     private String endTime;
     private String full_location;
     private String city;
     private String name;
     private String descr;
-    private int ownerId;
+    private String ownerName;
+    private String ownerSurname;
 
-    public Event(String startTime, String endTime, String full_location, String city, String name, String descr, int ownerId){
+    public PublicEvent(String startTime, String endTime,
+                       String full_location, String city,
+                       String name, String descr,
+                       String ownerName, String ownerSurname)
+    {
         this.startTime = startTime;
         this.endTime = endTime;
         this.full_location = full_location;
         this.city = city;
         this.name = name;
         this.descr = descr;
-        this.ownerId = ownerId;
+        this.ownerName = ownerName;
+        this.ownerSurname = ownerSurname;
     }
-    public Event(Event event) {
+
+    public PublicEvent(Event event, PublicUser user) {
         this.startTime = event.getStartTime();
-        this.endTime = event.endTime;
+        this.endTime = event.getEndTime();
         this.full_location = event.getFull_location();
         this.city = event.getCity();
         this.name = event.getName();
         this.descr = event.getDescription();
-        this.ownerId = event.getOwnerId();
+        this.ownerName = user.getName();
+        this.ownerSurname = user.getSurname();
+    }
+
+    public PublicEvent() {
+        this.startTime = "";
+        this.endTime = "";
+        this.full_location = "";
+        this.city = "";
+        this.name = "";
+        this.descr = "";
+        this.ownerName = "";
+        this.ownerSurname = "";
     }
 
     public String getStartTime() {
@@ -47,9 +66,15 @@ public class Event {
     public String getDescription() {
         return descr;
     }
-    public int getOwnerId() {
-        return ownerId;
+
+    public String getOwnerName() {
+        return ownerName;
     }
+
+    public String getOwnerSurname() {
+        return ownerSurname;
+    }
+
     public void setStartTime(String time) {
         this.startTime = time;
     }
@@ -68,5 +93,10 @@ public class Event {
     public void setDescription(String descr) {
         this.descr = descr;
     }
-    public void setOwnerId(int ownerId) {this.ownerId = ownerId; }
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+    public void setOwnerSurname(String ownerSurname) {
+        this.ownerSurname = ownerSurname;
+    }
 }

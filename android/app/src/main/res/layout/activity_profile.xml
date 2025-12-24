@@ -2,35 +2,49 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_profile_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     android:padding="24dp">
 
-    <!-- Заголовок -->
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+    <!-- Верхняя строка: заголовок + кнопка выхода -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Ваш аккаунт"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/title_text"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- Аватар -->
-    <ImageView
-        android:id="@+id/ivAvatar"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bg_avatar_placeholder"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ваш аккаунт"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/title_text" />
 
-    <!-- Текст списка -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Выйти"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:backgroundTint="@color/primary_color"
+            android:textColor="@color/text_primary"
+            android:contentDescription="Выйти" />
+
+    </LinearLayout>
+
+    <!-- Текст списка мероприятий -->
     <TextView
         android:id="@+id/tvEventsTitle"
         android:layout_width="wrap_content"
@@ -38,12 +52,22 @@
         android:text="Список ваших мероприятий"
         android:textSize="24sp"
         android:textColor="@color/events_text"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/ivAvatar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Кнопка -->
+    <!-- RecyclerView для мероприятий -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvEvents"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvEventsTitle"
+        app:layout_constraintBottom_toTopOf="@id/btnCreateEvent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <!-- Кнопка создания мероприятия -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCreateEvent"
         android:layout_width="0dp"
@@ -56,13 +80,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvEventss"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tvEventsTitle"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
