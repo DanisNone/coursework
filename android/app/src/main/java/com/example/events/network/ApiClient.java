@@ -59,6 +59,7 @@ public class ApiClient {
             try {
                 String url = ApiConfig.buildEventsGetUrl(city, start, end);
                 String json = httpGet(url);
+                Log.i("test", json);
                 List<PublicEvent> events = parsePublicEvents(json);
                 callback.onSuccess(events);
             } catch (Exception e) {

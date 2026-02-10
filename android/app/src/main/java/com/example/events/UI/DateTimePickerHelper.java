@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.widget.EditText;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -12,6 +13,16 @@ import java.util.Locale;
 public class DateTimePickerHelper {
     public static final SimpleDateFormat dateFormat =
             new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
+
+    public static String toISO8601(String s) throws ParseException {
+        java.util.Date date = dateFormat.parse(s);
+
+        java.text.SimpleDateFormat isoFormat =
+                new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        isoFormat.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+
+        return isoFormat.format(date);
+    }
 
     public static String removeTAndFormat(String isoDate) {
         if (isoDate == null) return null;

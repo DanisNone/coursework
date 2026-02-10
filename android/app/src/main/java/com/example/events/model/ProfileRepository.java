@@ -76,4 +76,8 @@ public class ProfileRepository {
     public boolean isLogged() {
         return login != null && password != null;
     }
+
+    public String getPassword() {
+        return password;
+    }
 }

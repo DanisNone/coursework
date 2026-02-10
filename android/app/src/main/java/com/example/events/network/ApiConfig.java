@@ -9,8 +9,8 @@ public class ApiConfig {
 
     static String buildEventsGetUrl(String city, String start, String end) {
         Uri.Builder builder = Uri.parse(BASE_URL + "get_events/").buildUpon();
-
-        builder.appendQueryParameter("city", city);
+        if (!city.equalsIgnoreCase("Любой"))
+            builder.appendQueryParameter("city", city);
         if (!start.isEmpty()) {
             builder.appendQueryParameter("start", start);
         }

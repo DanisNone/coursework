@@ -3,6 +3,7 @@ package com.example.events.main;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +30,7 @@ import com.example.events.viewModel.CitiesViewModel;
 import com.example.events.viewModel.EventsViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -105,10 +107,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setSpinnerData(List<String> cities) {
+        ArrayList<String> cities_copy = new ArrayList<>();
+        cities_copy.add("Любой");
+        cities_copy.addAll(cities);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
-                cities
+                cities_copy
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCity.setAdapter(adapter);

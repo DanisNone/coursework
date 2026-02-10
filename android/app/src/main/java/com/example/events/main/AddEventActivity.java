@@ -17,11 +17,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.events.R;
 import com.example.events.UI.DateTimePickerHelper;
 import com.example.events.model.Event;
+import com.example.events.model.ProfileRepository;
 import com.example.events.network.ApiClient;
 import com.example.events.network.ApiConfig;
 import com.google.gson.Gson;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddEventActivity extends AppCompatActivity {
 
@@ -141,22 +145,34 @@ public class AddEventActivity extends AppCompatActivity {
     }
 
     private void saveEvent() {
-        String startTime = etStartTime.getText().toString().trim();
-        String endTime = etEndTime.getText().toString().trim();
+        String startTime_s = etStartTime.getText().toString().trim();
+        String endTime_s = etEndTime.getText().toString().trim();
         String location = etEventLocation.getText().toString().trim();
         String city = etEventCity.getText().toString().trim();
         String name = etEventName.getText().toString().trim();
         String description = etEventDescription.getText().toString().trim();
+        ProfileRepository user = ProfileRepository.getInstance(getApplication());
+        String startTime, endTime;
+        try {
+            startTime = DateTimePickerHelper.toISO8601(startTime_s);
+            endTime = DateTimePickerHelper.toISO8601(endTime_s);
+        } catch (Exception e) {
+            showToast("Ошибка в формате времени");
+            return;
+        }
 
-
-        Event newEvent = new Event (
-                startTime, endTime,
-                location, city,
-                name, description, 1
-        );
+        Map<String, String> data = new HashMap<>();
+        data.put("startTime", startTime);
+        data.put("endTime", endTime);
+        data.put("full_location", location);
+        data.put("city", city);
+        data.put("name", name);
+        data.put("descr", description);
+        data.put("login", user.getLogin());
+        data.put("password", user.getPassword());
 
         Gson gson = new Gson();
-        String jsonData = gson.toJson(newEvent);
+        String jsonData = gson.toJson(data);
         String url = ApiConfig.POST_STR;
 
         btnSave.setEnabled(false);
